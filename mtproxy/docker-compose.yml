@@ -1,0 +1,14 @@
+version: "3.6"
+services:
+  mtproxy:
+    image: telegrammessenger/proxy
+    restart: always
+    ports:
+      - "60443:443"
+    volumes:
+      - config:/data
+    env_file:
+      - secret.env
+
+volumes:
+  config:
