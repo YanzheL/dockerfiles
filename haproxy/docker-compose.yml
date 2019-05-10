@@ -1,0 +1,26 @@
+version: '3.6'
+services:
+  haproxy:
+    image:
+      haproxy
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 5
+        window: 60s
+      update_config:
+        parallelism: 20
+        failure_action: rollback
+        delay: 10s
+        order: stop-first
+    ports:
+      - target: 8888
+        published: 17758
+        protocol: tcp
+        mode: host
+    volumes:
+      - ./haproxy.conf:/haproxyconf
+    command: ["haproxy", "-f", "/haproxyconf"]
+    restart: always

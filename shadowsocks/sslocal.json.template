@@ -1,0 +1,11 @@
+{
+    "server":"abc.example.com",
+    "server_port":30000,
+    "local_address": "0.0.0.0",
+    "local_port":1080,
+    "password":"MY_PASSWORD",
+    "timeout":60,
+    "method":"chacha20",
+    "workers": 8,
+    "fast_open": true
+}

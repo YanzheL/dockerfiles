@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  littleproxy:
+    image:
+      leeyanzhe/littleproxy
+    ports:
+      - target: 8080
+        published: 8118
+        protocol: tcp
+    #    mode: host
+    restart: always

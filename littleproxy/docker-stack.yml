@@ -1,0 +1,27 @@
+version: '3.6'
+services:
+  littleproxy:
+    image:
+      leeyanzhe/littleproxy
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 5
+        window: 60s
+      update_config:
+        parallelism: 20
+        failure_action: rollback
+        delay: 10s
+        order: stop-first
+    ports:
+      - target: 8080
+        published: 8118
+        protocol: tcp
+        mode: host
+    networks:
+      - mainnet
+networks:
+  mainnet:
+    external: true

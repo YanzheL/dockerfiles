@@ -1,0 +1,98 @@
+# [common] is integral section
+[common]
+# A literal address or host name for IPv6 must be enclosed
+# in square brackets, as in "[::1]:80", "[ipv6-host]:http" or "[ipv6-host%zone]:80"
+server_addr = abc.example.com
+server_port = 65500
+
+# if you want to connect frps by http proxy or socks5 proxy, you can set http_proxy here or in global environment variables
+# it only works when protocol is tcp
+# http_proxy = http://user:passwd@192.168.1.128:8080
+# http_proxy = socks5://user:passwd@192.168.1.128:1080
+
+# console or real logFile path like ./frpc.log
+log_file = /dev/stdout
+
+# trace, debug, info, warn, error
+log_level = info
+
+log_max_days = 7
+
+# for authentication
+token = b876ad7a-4e15-4d80-92a8-4bde00b2b1d5
+
+# set admin address for control frpc's action by http api such as reload
+admin_addr = 127.0.0.1
+admin_port = 7400
+admin_user = admin
+admin_pwd = MY_SECRET_ADMIN_PASSWORD
+
+# connections will be established in advance, default value is zero
+pool_count = 10
+
+# if tcp stream multiplexing is used, default is true, it must be same with frps
+tcp_mux = true
+
+# your proxy name will be changed to {user}.{proxy}
+user = helloworld
+
+# decide if exit program when first login failed, otherwise continuous relogin to frps
+# default is true
+login_fail_exit = true
+
+# communication protocol used to connect to server
+# now it supports tcp and kcp and websocket, default is tcp
+protocol = kcp
+
+# specify a dns server, so frpc will use this instead of default one
+# dns_server = 8.8.8.8
+
+# proxy names you want to start divided by ','
+# default is empty, means all proxies
+# start = ssh,dns
+
+# heartbeat configure, it's not recommended to modify the default value
+# the default value of heartbeat_interval is 10 and heartbeat_timeout is 90
+# heartbeat_interval = 30
+# heartbeat_timeout = 90
+
+# 'ssh' is the unique proxy name
+# if user in [common] section is not empty, it will be changed to {user}.{proxy} such as 'your_name.ssh'
+[ssh]
+# tcp | udp | http | https | stcp | xtcp, default is tcp
+type = tcp
+local_ip = 127.0.0.1
+local_port = 22
+# true or false, if true, messages between frps and frpc will be encrypted, default is false
+use_encryption = false
+# if true, message will be compressed
+use_compression = false
+# remote port listen by frps
+remote_port = 65511
+# frps will load balancing connections for proxies in same group
+# group = test_group
+# group should have same group key
+# group_key = f879570c-d087-4a80-825f-ee0944a32758
+# enable health check for the backend service, it support 'tcp' and 'http' now
+# frpc will connect local service's port to detect it's healthy status
+health_check_type = tcp
+# health check connection timeout
+health_check_timeout_s = 10
+# if continuous failed in 3 times, the proxy will be removed from frps
+health_check_max_failed = 3
+# every 10 seconds will do a health check
+health_check_interval_s = 10
+
+[mongo]
+type = tcp
+local_ip = 127.0.0.1
+local_port = 27017
+use_encryption = true
+use_compression = true
+remote_port = 65517
+# group = test_group
+# group_key = f879570c-d087-4a80-825f-ee0944a32758
+health_check_type = tcp
+health_check_timeout_s = 10
+health_check_max_failed = 3
+health_check_interval_s = 10

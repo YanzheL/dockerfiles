@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  ipsec:
+    image: leeyanzhe/strongswan-docker
+    network_mode: host
+    volumes:
+      - ./ipsec.conf:/usr/local/etc/ipsec.conf
+      - ./ipsec.secrets:/usr/local/etc/ipsec.secrets
+    restart: always
+    privileged: true

@@ -1,0 +1,13 @@
+type: s
+shadowsocks:
+  address: 127.0.0.1:6001
+manager:
+  address: 0.0.0.0:6002
+  password: 'MY_PASSWORD'
+db:
+  host: 'db.example.com'
+  port: 3306
+  user: 'root'
+  password: 'MY_DB_PASSWORD'
+  database: 'ssworker'
+#db: 'db.sqlite'

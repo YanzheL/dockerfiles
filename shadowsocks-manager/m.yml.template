@@ -1,0 +1,39 @@
+  
+type: m
+manager:
+  address: m.example.com:6002
+  password: 'MY_PASSWORD'
+plugins:
+  flowSaver:
+    use: true
+  user:
+    use: true
+  account:
+    use: true
+  email:
+    use: true
+    type: 'smtp'
+    username: 'abc@example.com'
+    password: 'MY_EMAIL_PASSWORD'
+    host: 'smtp.example.com'
+  webgui:
+    use: true
+    host: '0.0.0.0'
+    port: '8080'
+    site: 'http://admin.example.com'
+    # icon: 'icon.png'
+    # skin: 'default'
+    # googleAnalytics: 'UA-xxxxxxxx-x'
+    # gcmSenderId: 'xxxxxxxxx'
+    # gcmAPIKey: 'AAAAGzddLRc:XXXXXXXXXXXXXX'
+db:
+  host: 'db.example.com'
+  port: 3306
+  user: 'root'
+  password: 'MY_DB_PASSWORD'
+  database: 'ssmgr'
+# 从 0.30 开始需要配置 redis
+redis:
+  host: 'redis.example.com'
+  password: 'MY_REDIS_PASSWORD'
+  db: 0

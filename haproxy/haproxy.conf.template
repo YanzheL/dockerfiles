@@ -1,0 +1,36 @@
+global
+    log /dev/log    local0
+    log /dev/log    local1 info
+    maxconn 10000
+    # user haproxy
+    # group haproxy
+    # daemon
+
+defaults
+    log     global
+    mode    tcp
+    maxconn 10000
+    option  tcplog
+    option  dontlognull
+    timeout connect 5000
+    timeout client  50000
+    timeout server  50000
+
+# Configure HAProxy to listen on port 80
+frontend littleproxy_front
+    bind *:8888
+    mode http
+    stats enable
+    stats uri /haproxy?stats
+    default_backend littleproxy
+
+
+# Configure HAProxy to route requests to swarm nodes on port 18080
+backend littleproxy
+    balance roundrobin
+    mode http
+    cookie HAPROXY_SESSION insert indirect nocache
+    server hk1-in	172.31.42.63:8118	check	cookie	hk1-in
+    server hk2-in	172.31.113.34:8118	check	cookie	hk2-in
+    server hk3-in	172.31.113.41:8118	check	cookie	hk3-in
+#    server jp1-in	10.100.0.3:8118		check	cookie	jp1-in

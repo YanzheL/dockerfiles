@@ -1,0 +1,46 @@
+config setup
+    uniqueids=never
+
+conn %default
+    ike=chacha20poly1305-prfsha512-curve25519,aes256gcm16-sha512-ecp521,aes256-sha512-ecp521,aes256-sha384-modp2048,aes256-sha384-modp1024!
+    esp=chacha20poly1305-prfsha512-curve25519,aes256gcm16-sha512,aes256-sha512,aes256-sha1!
+    keyexchange=ikev2
+    forceencaps=yes
+    fragmentation=yes
+    dpdaction=restart
+    leftfirewall=yes
+    left=%defaultroute
+    rightfirewall=yes
+    rekey=yes
+    auto=add
+
+# Roadwarrior Client(Initiator) Configuration
+conn rwc_1
+    also=roadwarrior_client
+    right=remote.hostname.com # Remote server's hostname
+    rightid=remote.hostname.com # Remote server's id
+    auto=start # Automatically start
+
+# Site-to-Site Client(Initiator) Configuration
+conn nnc_1
+    also=netnet_client
+    leftsubnet=172.100.0.0/16 # Should be your leftsubnet, separated by comma.
+    right=remote.hostname.com # Remote server's hostname
+    rightid=remote.hostname.com # Remote server's id
+    auto=ignore # This connection is disabled by default. Change it to 'auto=add' if you need this connection.
+
+# Common parameters for initiator of roadwarrior connection
+conn roadwarrior_client
+    rightsubnet=0.0.0.0/0
+    leftid=Strongswan_Client
+    leftsourceip=%config
+    leftauth=eap-mschapv2
+    eap_identity=USERNAME # Change it to your username
+    rightsendcert=always
+
+# Common parameters for initiator of site-to-site connection
+conn netnet_client
+    leftfirewall=no
+    leftauth=eap-mschapv2
+    rightsubnet=0.0.0.0/0
+    eap_identity=USERNAME

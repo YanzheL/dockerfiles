@@ -1,0 +1,22 @@
+version: '3.6'
+services:
+  sslocal:
+    image:
+      mritd/shadowsocks
+    secrets:
+      - sslocal
+    restart: always
+    network_mode: host
+    #ports:
+    #  - target: 1080
+    #    published: 1080
+    #    protocol: tcp
+    #  - target: 1080
+    #    published: 1080
+    #    protocol: udp
+    environment:
+      SS_CONFIG: "-c /run/secrets/sslocal -v"
+      SS_MODULE: "ss-local"
+secrets:
+  sslocal:
+    file: ./sslocal.json
