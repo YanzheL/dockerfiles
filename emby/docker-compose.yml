@@ -1,6 +1,6 @@
 version: '3.6'
 services:
-  jellyfin:
+  emby:
     image: emby/embyserver
     network_mode: 'host'
     volumes:
