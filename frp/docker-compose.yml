@@ -1,14 +1,14 @@
 version: '3.6'
 services:
   frps:
-    build: .
+    image: leeyanzhe/frp
     network_mode: 'host'
     volumes:
       - ./frps.ini:/etc/frp/frps.ini
     restart: always
     command: ./frps -c frps.ini
   frpc:
-    build: .
+    image: leeyanzhe/frp
     network_mode: 'host'
     volumes:
       - ./frpc.ini:/etc/frp/frpc.ini
