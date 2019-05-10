@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  phantomjs:
+    image: wernight/phantomjs
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "4444:4444"
+    command: ["phantomjs","--webdriver=0.0.0.0:4444","--disk-cache=true","--web-security=false","--local-to-remote-url-access=true"]
+    restart: always
+    network_mode: host
