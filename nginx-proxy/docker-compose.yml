@@ -1,0 +1,13 @@
+version: '3.6'
+services:
+  proxy:
+    image: jwilder/nginx-proxy:alpine
+    restart: always
+    network_mode: host
+    volumes:
+      - ./custom.conf:/etc/nginx/conf.d/custom.conf
+      - ./ssl/certs/secp384r1.wildcard.example.com.pem:/etc/nginx/certs/example.com.crt:ro
+      - ./ssl/private/secp384r1.wildcard.example.com.key:/etc/nginx/certs/example.com.key:ro
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+    # environment:
+    #   - DEFAULT_HOST=abc.example.com

@@ -1,0 +1,24 @@
+version: '3.6'
+services:
+  splash:
+    image: scrapinghub/splash
+    deploy:
+      #  mode: global
+      mode: replicated
+      replicas: 30
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 5
+        window: 60s
+      update_config:
+        parallelism: 20
+        failure_action: rollback
+        delay: 10s
+        order: stop-first
+    volumes:
+      - /dev/shm:/dev/shm
+    ports:
+      - "8050:8050"
+    restart: always
+    # network_mode: host

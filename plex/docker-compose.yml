@@ -1,0 +1,14 @@
+version: '3.6'
+services:
+  plex:
+    image: plexinc/pms-docker
+    network_mode: host
+    #ports:
+    #  - "32400:32400"
+    volumes:
+      - ./config:/config
+      - ./transcode:/transcode
+      - ./data:/data
+    restart: always
+    env_file:
+      - web.env

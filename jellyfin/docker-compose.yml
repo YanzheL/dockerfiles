@@ -1,0 +1,22 @@
+version: '3.6'
+services:
+  jellyfin:
+    image: jellyfin
+    network_mode: 'host'
+    volumes:
+      - ./config:/config
+      - ./data:/media
+    restart: always
+    # devices:
+    #   - /dev/dri/renderD128:/dev/dri/renderD128
+    #   - /dev/dri/card0:/dev/dri/card0
+    #   - /dev/nvidia0:/dev/nvidia0
+    #   - /dev/nvidiactl:/dev/nvidiactl
+    environment:
+      - UID=0
+      - GID=0
+      - GIDLIST=1000,44
+    env_file:
+      - web.env
+      - nvidia.env
+    privileged: true

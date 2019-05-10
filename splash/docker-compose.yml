@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  splash:
+    image: scrapinghub/splash
+    volumes:
+      - /dev/shm:/dev/shm
+    # ports:
+    #   - "8050:8050"
+    restart: always
+    network_mode: host

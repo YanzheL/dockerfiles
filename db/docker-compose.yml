@@ -1,0 +1,72 @@
+version: "3.6"
+services:
+  mongo:
+    image: mongo
+    ports:
+      - "27017:27017"
+    # network_mode: 'host'
+    volumes:
+      - mongo_db:/mongodb
+      - ./mongo.key:/run/secrets/keyfile
+    entrypoint:
+      - mongod
+      - --bind_ip
+      - "0.0.0.0"
+      - --dbpath
+      - /mongodb
+      - --replSet
+      - servrepl
+      - --keyFile
+      - /run/secrets/keyfile
+      - --auth
+      # - --sslMode
+      # - preferSSL
+      # - --sslPEMKeyFile
+      # - /run/secrets/sslkey
+      # - --sslCAFile
+      # - /run/secrets/sslca
+    restart: always
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+    # command: ["redis-server", "/redisconf"]
+    volumes:
+      - redis_db:/redis_db
+      # - ./redis/redis.conf:/redisconf
+
+  mysql:
+    image: mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=my_strong_password
+    ports:
+      - "3306:3306"
+    # network_mode: "host"
+    command: --sql-mode=
+    # command: --default-authentication-plugin=mysql_native_password --sql-mode=
+    volumes:
+      - mysql_db:/var/lib/mysql
+
+  memcached:
+    image: memcached:alpine
+    restart: always
+
+  mariadb:
+    image: mariadb
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    restart: always
+    volumes:
+      - maria_db:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=my_strong_password
+    ports:
+      - "3306:3306"
+
+volumes:
+  mongo_db:
+  redis_db:
+  mysql_db:
+  maria_db:
