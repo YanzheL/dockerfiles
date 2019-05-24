@@ -13,4 +13,4 @@ services:
     volumes:
       - ./frpc.ini:/etc/frp/frpc.ini
     restart: always
-    command: ./frpc -c frpc.ini
+    command: ["./frpc", "-c", "frpc.ini"]

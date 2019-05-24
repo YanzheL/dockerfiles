@@ -6,7 +6,7 @@ services:
     restart: always
     network_mode: host
     user: root
-    command: ss-manager -m chacha20 -u --manager-address 127.0.0.1:6001
+    command: ["ss-manager", "-m", "chacha20", "-u", "--manager-address", "127.0.0.1:6001"]
   ssmgr-s:
     image:
       gyteng/ssmgr
@@ -14,11 +14,11 @@ services:
     network_mode: host
     volumes:
       - ./s.yml:/root/.ssmgr/s.yml
-    command: ssmgr -c /root/.ssmgr/s.yml
+    command: ["ssmgr", "-c", "/root/.ssmgr/s.yml"]
   ssmgr-m:
     image:
       gyteng/ssmgr
     restart: always
     volumes:
       - ./m.yml:/root/.ssmgr/m.yml
-    command: ssmgr -c /root/.ssmgr/m.yml
+    command: ["ssmgr", "-c", "/root/.ssmgr/m.yml"]
