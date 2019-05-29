@@ -15,12 +15,8 @@ services:
         failure_action: rollback
         delay: 10s
         order: stop-first
-    ports:
-      - target: 8888
-        published: 17758
-        protocol: tcp
-        mode: host
     volumes:
       - ./haproxy.conf:/haproxyconf
     command: ["haproxy", "-f", "/haproxyconf"]
     restart: always
+    network_mode: host
