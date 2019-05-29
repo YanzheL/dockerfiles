@@ -3,5 +3,5 @@ services:
   conn1:
     image: leeyanzhe/tcp-proxy
     restart: always
-    command: tcp-proxy -l 0.0.0.0:443 -r 10.245.146.40:443
+    command: ["tcp-proxy", "-l", "0.0.0.0:443", "-r", "10.245.146.40:443"]
     network_mode: host

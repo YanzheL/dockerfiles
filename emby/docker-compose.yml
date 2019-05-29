@@ -1,17 +1,17 @@
 version: '3.6'
 services:
-  jellyfin:
+  emby:
     image: emby/embyserver
     network_mode: 'host'
     volumes:
       - ./config:/config
       - ./data:/mnt/data
     restart: always
-    # devices:
-    #   - /dev/dri/renderD128:/dev/dri/renderD128
-    #   - /dev/dri/card0:/dev/dri/card0
-    #   - /dev/nvidia0:/dev/nvidia0
-    #   - /dev/nvidiactl:/dev/nvidiactl
+    devices:
+      - /dev/dri/renderD128:/dev/dri/renderD128
+      - /dev/dri/card0:/dev/dri/card0
+      - /dev/nvidia0:/dev/nvidia0
+      - /dev/nvidiactl:/dev/nvidiactl
     environment:
       - UID=0
       - GID=0
