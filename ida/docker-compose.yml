@@ -1,0 +1,21 @@
+version: '3.6'
+services:
+  ida_linux_server64:
+    build: .
+    ports:
+      - "23946:23946"
+    privileged: true
+    command: ["linux_server64", "-v"]
+  ida_linux_server32:
+    build: .
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 10s
+        max_attempts: 5
+        window: 60s
+    ports:
+      - "23947:23946"
+    privileged: true
+    command: ["linux_server", "-v"]
