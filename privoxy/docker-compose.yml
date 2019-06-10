@@ -1,0 +1,10 @@
+version: '3.6'
+services:
+  privoxy:
+    image: vimagick/privoxy
+    #network_mode: host
+    ports:
+      - "17758:8118"
+    cap_add:
+      - NET_ADMIN
+    restart: always
