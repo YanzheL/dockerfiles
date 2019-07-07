@@ -1,12 +1,14 @@
-version: '3.6'
+version: '2.4'
 services:
   squid:
-    image: sameersbn/squid
+    image: leeyanzhe/squid
     volumes:
       - cache:/var/spool/squid
       - ./squid.conf:/etc/squid/squid.conf
     ports:
       - 8118:3128
     restart: always
+    mem_limit: 280000000
+    # memswap_limit: 2000000000
 volumes:
   cache:

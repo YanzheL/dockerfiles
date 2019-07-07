@@ -1,0 +1,30 @@
+version: '3.6'
+services:
+  squid:
+    image: leeyanzhe/squid
+    deploy:
+      mode: global
+      restart_policy:
+        condition: any
+        delay: 10s
+        max_attempts: 5
+        window: 60s
+      update_config:
+        parallelism: 20
+        failure_action: rollback
+        delay: 10s
+        order: stop-first
+    volumes:
+      - cache:/var/spool/squid
+    ports:
+      - 8118:3128
+    restart: always
+    configs:
+      - source: squid_conf
+        target: /etc/squid/squid.conf
+        mode: 0444
+configs:
+  squid_conf:
+    file: ./squid.conf
+volumes:
+  cache:
