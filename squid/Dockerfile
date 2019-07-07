@@ -22,7 +22,8 @@ RUN apt -y update \
     && apt -y install build-essential \
                       git \
                       curl \
-                      wget
+                      wget \
+                      gpg
 RUN echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main" >> /etc/apt/sources.list.d/llvm.list \
     && echo "deb-src http://apt.llvm.org/bionic/ llvm-toolchain-bionic main" >> /etc/apt/sources.list.d/llvm.list \
     && apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 15CF4D18AF4F7421 \
@@ -52,7 +53,7 @@ RUN ./configure \
     --disable-translation \
     --enable-inline \
     --enable-async-io=8 \
-    --enable-storeio=null,ufs,aufs,diskd,rock \
+    --enable-storeio=ufs,aufs,diskd,rock \
     --enable-removal-policies=lru,heap \
     --enable-delay-pools \
     --enable-cache-digests \
