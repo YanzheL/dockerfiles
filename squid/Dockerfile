@@ -1,13 +1,20 @@
 FROM ubuntu AS production_env
 
 RUN apt -y update \
-    && apt -y install libxml2-dev \
-                      libecap3-dev \
-                      libldap2-dev \
-                      libpam0g-dev \
-                      libsasl2-dev \
-                      krb5-multidev \
-                      libssl-dev
+    && apt -y --no-install-recommends install \
+        libxml2 \
+        libecap3 \
+        libldap-2.4-2 \
+        libpam0g \
+        libsasl2-2 \
+        krb5-multidev \
+        libssl-dev \
+        ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
+
+ENV SQUID_CACHE_DIR=/var/spool/squid
+ENV SQUID_LOG_DIR=/var/log/squid
+ENV SQUID_USER=proxy
 
 FROM production_env AS builder
 
@@ -25,6 +32,13 @@ RUN echo "deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main" >> /etc/ap
 ENV CC clang-9
 ENV CXX clang++-9
 ENV CXXFLAGS=-Wno-error=defaulted-function-deleted
+
+RUN apt -y install \
+        libxml2-dev \
+        libecap3-dev \
+        libldap2-dev \
+        libpam0g-dev \
+        libsasl2-dev
 
 WORKDIR /usr/src
 
@@ -65,12 +79,12 @@ RUN ./configure \
     --enable-zph-qos \
     --enable-linux-netfilter \
     --enable-http-violation \
-    --with-swapdir=/var/spool/squid \
+    --with-swapdir=$SQUID_CACHE_DIR \
     --with-logdir=/var/log/squid \
     --with-pidfile=/var/run/squid.pid \
     --with-filedescriptors=65536 \
     --with-large-files \
-    --with-default-user=proxy \
+    --with-default-user=$SQUID_USER \
     --with-openssl
 
 RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
@@ -79,10 +93,6 @@ RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
     # && make install
 
 FROM production_env
-
-ENV SQUID_CACHE_DIR=/var/spool/squid
-ENV SQUID_LOG_DIR=/var/log/squid
-ENV SQUID_USER=proxy
 
 COPY --from=builder /usr/src/build /
 
