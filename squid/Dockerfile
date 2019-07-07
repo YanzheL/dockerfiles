@@ -2,11 +2,11 @@ FROM ubuntu AS production_env
 
 RUN apt -y update \
     && apt -y --no-install-recommends install \
-        libxml2 \
-        libecap3 \
-        libldap-2.4-2 \
-        libpam0g \
-        libsasl2-2 \
+        libxml2-dev \
+        libecap3-dev \
+        libldap2-dev \
+        libpam0g-dev \
+        libsasl2-dev \
         krb5-multidev \
         libssl-dev \
         ca-certificates \
@@ -33,13 +33,6 @@ ENV CC clang-9
 ENV CXX clang++-9
 ENV CXXFLAGS=-Wno-error=defaulted-function-deleted
 
-RUN apt -y install \
-        libxml2-dev \
-        libecap3-dev \
-        libldap2-dev \
-        libpam0g-dev \
-        libsasl2-dev
-
 WORKDIR /usr/src
 
 ENV SQUID_VERSION 4.7
@@ -59,7 +52,7 @@ RUN ./configure \
     --disable-translation \
     --enable-inline \
     --enable-async-io=8 \
-    --enable-storeio=ufs,aufs,diskd,rock \
+    --enable-storeio=null,ufs,aufs,diskd,rock \
     --enable-removal-policies=lru,heap \
     --enable-delay-pools \
     --enable-cache-digests \
