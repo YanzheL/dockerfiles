@@ -2,7 +2,6 @@ version: '2.4'
 services:
   anyproxy:
     image: leeyanzhe/anyproxy
-    volumes:
     network_mode: host
     restart: always
     mem_limit: 200000000
