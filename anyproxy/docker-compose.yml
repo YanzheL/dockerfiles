@@ -1,9 +1,10 @@
-version: '2.4'
+version: '3.7'
 services:
   anyproxy:
     image: leeyanzhe/anyproxy
-    network_mode: host
+    ports:
+      - 8118:8118
     restart: always
-    mem_limit: 200000000
-    # memswap_limit: 2000000000
     command: ["anyproxy", "--port", "8118", "--ignore-unauthorized-ssl"]
+    env_file:
+      - web.env
