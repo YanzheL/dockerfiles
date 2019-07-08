@@ -6,4 +6,4 @@ services:
     restart: always
     mem_limit: 200000000
     # memswap_limit: 2000000000
-    command: ["anyproxy", "--port", "8118"]
+    command: ["anyproxy", "--port", "8118", "--ignore-unauthorized-ssl"]
