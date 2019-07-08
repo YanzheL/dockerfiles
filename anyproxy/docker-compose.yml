@@ -2,8 +2,7 @@ version: '3.7'
 services:
   anyproxy:
     image: leeyanzhe/anyproxy
-    ports:
-      - 8118:8118
+    network_mode: host
     restart: always
     command: ["anyproxy", "--port", "8118", "--ignore-unauthorized-ssl"]
     env_file:
