@@ -6,4 +6,6 @@ services:
     volumes:
       - ./config:/usr/local/etc
     restart: always
-    privileged: true
+    #privileged: true
+    cap_add:
+      - NET_ADMIN
