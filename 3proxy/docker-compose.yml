@@ -1,0 +1,9 @@
+version: '3.6'
+services:
+  3proxy:
+    image: riftbit/3proxy
+    ports:
+      - "50545:1080"
+    restart: always
+    env_file:
+      - cred.env
