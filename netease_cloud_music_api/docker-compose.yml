@@ -1,0 +1,7 @@
+version: '3.6'
+services:
+  app:
+    image: binaryify/netease_cloud_music_api
+    restart: always
+    ports:
+      - "3000:3000"

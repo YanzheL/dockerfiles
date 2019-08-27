@@ -1,35 +1,43 @@
-FROM alpine:edge
+FROM alpine:edge AS builder
 
 LABEL maintainer="Yanzhe Lee"
 
-ENV STRONGSWAN_VERSION 5.7.2
-
-ENV CC clang
-
-ENV CXX clang++
+ENV STRONGSWAN_VERSION 5.8.0
 
 RUN apk add build-base \
             clang-dev \
             curl-dev \
+            curl \
             openssl-dev \
             gmp-dev \
-            curl \
-            ip6tables \
             ca-certificates \
-            iproute2 \
             linux-headers \
-    && cd /tmp \
-    && curl -L -o strongswan.gz https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.gz \
-    && tar -zvxf strongswan.gz \
-    && cd strongswan-${STRONGSWAN_VERSION} \
-    && ./configure \
+            lld \
+            llvm-dev
+
+RUN cd /tmp \
+    && curl -L https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.gz | tar zxf - 
+
+WORKDIR /tmp/strongswan-${STRONGSWAN_VERSION}/build
+
+ENV CC clang
+ENV CXX clang++
+ENV LD ld.lld
+ENV AR llvm-ar
+ENV AS llvm-as
+ENV CPPFLAGS "-flto"
+ENV CFLAGS "-flto"
+
+RUN ../configure \
+        --disable-stroke \
+        --disable-scepclient \
+        --disable-ikev1 \
         --enable-addrblock \
         --enable-aesni \
         --enable-attr \
         --enable-af-alg \
         --enable-bypass-lan \
         --enable-certexpire \
-        --enable-chapoly \
         --enable-constraints \
         --enable-counters \
         --enable-curl \
@@ -57,21 +65,22 @@ RUN apk add build-base \
         --enable-pkcs11 \
         --enable-radattr \
         --enable-sha3 \
-        --enable-swanctl \
-        --enable-tpm \
-        --enable-unity \
-        --enable-vici \
-    && make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
-    && make install \
-    && cd / \
-    && rm -rf /tmp/* \
-    && apk del build-base curl-dev openssl-dev clang-dev \
-    && rm -rf /var/cache/apk/* \
-    && ln -s /etc/ssl/certs/*.pem /usr/local/etc/ipsec.d/cacerts/
+        --enable-tpm
 
-EXPOSE 500/udp \
-       4500/udp
+RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
+    && make DESTDIR=/usr/src/app install
+
+FROM alpine:edge
+
+RUN apk add curl \
+            openssl \
+            gmp \
+            ip6tables \
+            ca-certificates \
+            iproute2
+
+COPY --from=builder /usr/src/app /
 
 WORKDIR /usr/local/etc
 
-CMD ["ipsec", "start", "--nofork"]
+ENTRYPOINT [ "/usr/local/libexec/ipsec/charon" ]
