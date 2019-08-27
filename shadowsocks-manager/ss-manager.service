@@ -6,7 +6,8 @@ After=strongswan.service
 Restart=always
 ExecStart=/usr/bin/podman start -a ss-manager
 ExecStop=/usr/bin/podman stop -t 15 ss-manager
-ExecStartPost=-/root/refresh
+RestartSec=5
+ExecStartPost=-/bin/bash -c "sleep 3; /usr/bin/python3 /root/mongossr/mongo_mgr.py -j"
 
 [Install]
-WantedBy=local.target
+WantedBy=multi-user.target
