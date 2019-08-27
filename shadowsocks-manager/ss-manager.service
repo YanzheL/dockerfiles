@@ -1,0 +1,10 @@
+[Unit]
+Description=Shadowsocks Manager
+
+[Service]
+Restart=always
+ExecStart=/usr/bin/podman start -a ss-manager
+ExecStop=/usr/bin/podman stop -t 15 ss-manager
+
+[Install]
+WantedBy=local.target
