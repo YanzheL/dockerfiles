@@ -1,0 +1,15 @@
+version: '3.6'
+services:
+  sourcegraph:
+    image:
+      sourcegraph/server
+    volumes:
+      - config:/etc/sourcegraph
+      - data:/var/opt/sourcegraph
+    env_file:
+      - web.env
+    network_mode: host
+    restart: always
+volumes:
+  config:
+  data:
