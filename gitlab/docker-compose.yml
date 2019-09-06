@@ -1,11 +1,12 @@
 version: '3.6'
 services:
   gitlab:
-    image: gitlab/gitlab-ce
+    image: gitlab/gitlab-ee
     volumes:
       - ./config:/etc/gitlab
       - ./logs:/var/log/gitlab
       - ./data:/var/opt/gitlab
     restart: always
+    hostname: git.hitnslab.com
     env_file:
       - web.env
