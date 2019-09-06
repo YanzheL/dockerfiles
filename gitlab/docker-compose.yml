@@ -1,0 +1,11 @@
+version: '3.6'
+services:
+  gitlab:
+    image: gitlab/gitlab-ce
+    volumes:
+      - ./config:/etc/gitlab
+      - ./logs:/var/log/gitlab
+      - ./data:/var/opt/gitlab
+    restart: always
+    env_file:
+      - web.env
