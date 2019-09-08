@@ -1,3 +1,0 @@
-[submodule "seafile-pro-docker"]
-	path = seafile-pro
-	url = git@github.com:YanzheL/seafile-pro-docker.git
