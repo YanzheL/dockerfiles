@@ -1,0 +1,58 @@
+version: '2.0'
+services:
+  db:
+    image: mariadb
+    container_name: seafile-mysql
+    env_file:
+      - db.env
+    volumes:
+      - ./shared/db:/var/lib/mysql  # Requested, specifies the path to MySQL data persistent store.
+    networks:
+      - seafile-net
+    restart: always
+
+  memcached:
+    image: memcached:alpine
+    container_name: seafile-memcached
+    entrypoint: memcached -m 256
+    restart: always
+    networks:
+      - seafile-net
+
+  elasticsearch:
+    image: seafileltd/elasticsearch-with-ik:5.6.16
+    container_name: seafile-elasticsearch
+    environment:
+      - discovery.type=single-node
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms1g -Xmx1g"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    mem_limit: 2g
+    restart: always
+    volumes:
+      - ./shared/elasticsearch:/usr/share/elasticsearch/data  # Requested, specifies the path to Elasticsearch data persistent store.
+    networks:
+      - seafile-net
+
+  seafile:
+    image: docker.seafile.top/seafileltd/seafile-pro-mc:latest
+    container_name: seafile
+    volumes:
+      - ./shared:/shared   # Requested, specifies the path to Seafile data persistent store.
+      - ./seafile.nginx.conf.template:/templates/seafile.nginx.conf.template   # Applied a patch to use "X-Forwarded-Proto $http_x_forwarded_proto;" instead of "X-Forwarded-Proto $scheme;"
+    env_file:
+      - app.env
+      - web.env
+    restart: always
+    depends_on:
+      - db
+      - memcached
+      - elasticsearch
+    networks:
+      - seafile-net
+
+networks:
+  seafile-net:
