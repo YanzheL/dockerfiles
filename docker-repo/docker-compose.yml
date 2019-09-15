@@ -2,7 +2,6 @@ version: '3.6'
 services:
   docker-mirror:
     image: registry:2
-    network_mode: host
     volumes:
       - ./repos/docker/data:/var/lib/registry
       - ./repos/docker/config.yml:/etc/config.yml
@@ -10,23 +9,3 @@ services:
     command: /etc/config.yml
     env_file:
       - ./repos/docker/web.env
-  gcr-mirror:
-    image: registry:2
-    network_mode: host
-    volumes:
-      - ./repos/gcr/data:/var/lib/registry
-      - ./repos/gcr/config.yml:/etc/config.yml
-    restart: always
-    command: /etc/config.yml
-    env_file:
-      - ./repos/gcr/web.env
-  quay-mirror:
-    image: registry:2
-    network_mode: host
-    volumes:
-      - ./repos/quay/data:/var/lib/registry
-      - ./repos/quay/config.yml:/etc/config.yml
-    restart: always
-    command: /etc/config.yml
-    env_file:
-      - ./repos/quay/web.env
