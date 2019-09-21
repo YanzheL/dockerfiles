@@ -12,20 +12,14 @@
     {
       "port": 1080,
       "listen": "127.0.0.1",
-      "protocol": "socks5",
+      "protocol": "socks",
       "settings": {
         "udp": true
       },
-      "streamSettings": {},
-      "tag": "socks5-in-0",
+      "tag": "socks-in-0",
       "sniffing": {
         "enabled": false,
         "destOverride": ["http", "tls"]
-      },
-      "allocate": {
-        "strategy": "always",
-        "refresh": 5,
-        "concurrency": 4
       }
     }
   ],
@@ -50,7 +44,6 @@
         ]
       },
       "tag": "vmess-out-0",
-      "streamSettings": {},
       "mux": {
         "enabled": true,
         "concurrency": 8

@@ -27,9 +27,6 @@
           "level": 0,
           "alterId": 4
         },
-        "detour": {
-          "to": "direct"
-        },
         "disableInsecureEncryption": true
       },
       "streamSettings": {},
