@@ -16,7 +16,7 @@ services:
     networks:
       - proxied
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
-    depends_on:
+    volumes_from:
       - nginx
     volumes:
       - ./conf.d:/etc/nginx/conf.d
