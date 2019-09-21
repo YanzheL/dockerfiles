@@ -2,16 +2,20 @@
   "log": {
     "loglevel": "info"
   },
-  "api": {},
-  "dns": {},
+  "api": {
+    "tag": "api",
+    "services": [
+      "HandlerService",
+      "LoggerService",
+      "StatsService"
+    ]
+  },
   "stats": {},
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [],
     "balancers": []
   },
-  "policy": {},
-  "reverse": {},
   "inbounds": [
     {
       "port": 57718,

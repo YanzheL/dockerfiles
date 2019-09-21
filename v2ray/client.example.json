@@ -2,16 +2,12 @@
   "log": {
     "loglevel": "info"
   },
-  "api": {},
-  "dns": {},
   "stats": {},
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [],
     "balancers": []
   },
-  "policy": {},
-  "reverse": {},
   "inbounds": [
     {
       "port": 1080,
