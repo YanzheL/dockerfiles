@@ -51,7 +51,7 @@
           "allowInsecure": true
         },
         "wsSettings": {
-          "path": "/"
+          "path": "/inbound"
         }
       },
       "mux": {
