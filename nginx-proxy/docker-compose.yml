@@ -3,18 +3,14 @@ services:
   nginx:
     image: nginx
     container_name: nginx
-    ports:
-      - "443:443"
-    networks:
-      - proxied
+    network_mode: host
     volumes:
       - ./certs:/etc/nginx/certs:ro
       - ./conf.d:/etc/nginx/conf.d
 
   dockergen:
     image: jwilder/docker-gen
-    networks:
-      - proxied
+    network_mode: host
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:
       - nginx
@@ -25,7 +21,3 @@ services:
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
     env_file:
       - default.env
-
-networks:
-  proxied:
-    name: proxied

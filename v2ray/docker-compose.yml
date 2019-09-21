@@ -2,8 +2,6 @@ version: '2.4'
 services:
   v2ray:
     image: v2ray/official
-    networks:
-      - proxied
     expose:
       - 80
     restart: always
@@ -11,7 +9,3 @@ services:
       - ./config.json:/etc/v2ray/config.json
     env_file:
       - web.env
-networks:
-  proxied:
-    name: proxied
-    external: true
