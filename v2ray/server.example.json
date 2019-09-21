@@ -55,7 +55,6 @@
       },
       "tag": "direct",
       "streamSettings": {},
-      "proxySettings": {},
       "mux": {
         "enabled": true,
         "concurrency": 8
