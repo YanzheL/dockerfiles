@@ -9,15 +9,17 @@ services:
       - proxied
     volumes:
       - ./certs:/etc/nginx/certs:ro
-      - /etc/nginx/conf.d
+      - ./conf.d:/etc/nginx/conf.d
 
   dockergen:
     image: jwilder/docker-gen
     networks:
       - proxied
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
-    volumes_from:
+    depends_on:
       - nginx
+    volumes:
+      - ./conf.d:/etc/nginx/conf.d
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl

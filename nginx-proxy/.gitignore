@@ -1,2 +1,3 @@
 certs/
 *.env
+conf.d/
