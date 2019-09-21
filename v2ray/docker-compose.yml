@@ -2,9 +2,9 @@ version: '3.6'
 services:
   v2ray:
     image: v2ray/official
-    network_mode: host
+    # network_mode: host
     restart: always
     volumes:
       - ./config.json:/etc/v2ray/config.json
-      - ./encipherment.crt:/etc/v2ray/encipherment.crt
-      - ./encipherment.key:/etc/v2ray/encipherment.key
+    env_file:
+      - web.env

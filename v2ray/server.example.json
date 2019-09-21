@@ -46,7 +46,7 @@
       "tag": "api"
     },
     {
-      "port": 8443,
+      "port": 80,
       "listen": "0.0.0.0",
       "protocol": "vmess",
       "settings": {
@@ -62,43 +62,11 @@
       },
       "streamSettings": {
         "network": "ws",
-        "security": "tls",
-        "tlsSettings": {
-          "allowInsecure": false,
-          "allowInsecureCiphers": false,
-          "alpn": ["http/2"],
-          "certificates": [
-            {
-              "usage": "encipherment",
-              "certificateFile": "/etc/v2ray/encipherment.crt",
-              "keyFile": "/etc/v2ray/encipherment.key"
-            }
-          ],
-          "disableSystemRoot": false
-        },
         "wsSettings": {
-          "path": "/"
+          "path": "/inbound"
         }
       },
       "tag": "vmess-in-ws-0"
-    },
-    {
-      "port": 57718,
-      "listen": "0.0.0.0",
-      "protocol": "vmess",
-      "settings": {
-        "clients": [
-          {
-            "id": "27848739-7e62-4138-9fd3-098a63964b6b",
-            "email": "master@v2ray.com",
-            "alterId": 16,
-            "level": 0
-          }
-        ],
-        "disableInsecureEncryption": true
-      },
-      "streamSettings": {},
-      "tag": "vmess-in-0"
     }
   ],
   "outbounds": [
