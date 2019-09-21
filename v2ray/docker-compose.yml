@@ -1,4 +1,4 @@
-version: '3.6'
+version: '2.4'
 services:
   v2ray:
     image: v2ray/official
@@ -11,3 +11,7 @@ services:
       - ./config.json:/etc/v2ray/config.json
     env_file:
       - web.env
+networks:
+  proxied:
+    name: proxied
+    external: true
