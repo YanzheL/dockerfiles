@@ -2,6 +2,23 @@
   "log": {
     "loglevel": "info"
   },
+  "policy":{
+    "levels": {
+      "0": {
+        "handshake": 10,
+        "connIdle": 300,
+        "uplinkOnly": 0,
+        "downlinkOnly": 0,
+        "statsUserUplink": true,
+        "statsUserDownlink": true,
+        "bufferSize": 2048
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true
+    }
+  },
   "api": {
     "tag": "api",
     "services": ["HandlerService", "LoggerService", "StatsService"]
