@@ -21,8 +21,8 @@ services:
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
-    # env_file:
-    #   - default.env
+    env_file:
+      - default.env
 
 networks:
   proxied:
