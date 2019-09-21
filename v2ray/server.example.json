@@ -26,10 +26,25 @@
   "stats": {},
   "routing": {
     "domainStrategy": "AsIs",
-    "rules": [],
+    "rules": [
+      {
+        "inboundTag": ["api"],
+        "outboundTag": "api",
+        "type": "field"
+      }
+    ],
     "balancers": []
   },
   "inbounds": [
+    {
+      "listen": "127.0.0.1",
+      "port": 10085,
+      "protocol": "dokodemo-door",
+      "settings": {
+        "address": "127.0.0.1"
+      },
+      "tag": "api"
+    },
     {
       "port": 443,
       "listen": "0.0.0.0",
@@ -48,7 +63,7 @@
       "streamSettings": {
         "network": "ws",
         "security": "tls",
-        "tlsSettings":{
+        "tlsSettings": {
           "allowInsecure": false,
           "allowInsecureCiphers": false,
           "alpn": ["http/2"],
