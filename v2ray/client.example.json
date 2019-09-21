@@ -44,6 +44,21 @@
         ]
       },
       "tag": "vmess-out-0",
+      "streamSettings": {
+        "network": "mkcp",
+        "kcpSettings": {
+          "mtu": 1350,
+          "tti": 20,
+          "uplinkCapacity": 20,
+          "downlinkCapacity": 20,
+          "congestion": true,
+          "readBufferSize": 2,
+          "writeBufferSize": 2,
+          "header": {
+            "type": "none"
+          }
+        }
+      },
       "mux": {
         "enabled": true,
         "concurrency": 8
