@@ -2,6 +2,8 @@ version: '3.6'
 services:
   v2ray:
     image: v2ray/official
+    networks:
+      - proxied
     expose:
       - 80
     restart: always
