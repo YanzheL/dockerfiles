@@ -25,21 +25,7 @@
         },
         "disableInsecureEncryption": true
       },
-      "streamSettings": {
-        "network": "mkcp",
-        "kcpSettings": {
-          "mtu": 1350,
-          "tti": 20,
-          "uplinkCapacity": 20,
-          "downlinkCapacity": 20,
-          "congestion": true,
-          "readBufferSize": 2,
-          "writeBufferSize": 2,
-          "header": {
-            "type": "none"
-          }
-        }
-      },
+      "streamSettings": {},
       "tag": "vmess-in-0"
     }
   ],
