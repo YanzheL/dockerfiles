@@ -2,7 +2,7 @@
   "log": {
     "loglevel": "info"
   },
-  "policy":{
+  "policy": {
     "levels": {
       "0": {
         "handshake": 10,
@@ -42,7 +42,18 @@
         },
         "disableInsecureEncryption": true
       },
-      "streamSettings": {},
+      "streamSettings": {
+        "network": "quic",
+        "security": "none",
+        "quicSettings": {
+          "security": "chacha20-poly1305",
+          "key": "2d25f18a-69f6-42b7-8d5c-d25495f02a36",
+          "header": {
+            "type": "none"
+          }
+        },
+        "sockopt": {}
+      },
       "tag": "vmess-in-0"
     }
   ],
