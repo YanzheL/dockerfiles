@@ -1,0 +1,62 @@
+{
+  "log": {
+    "loglevel": "info"
+  },
+  "api": {},
+  "dns": {},
+  "stats": {},
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [],
+    "balancers": []
+  },
+  "policy": {},
+  "reverse": {},
+  "inbounds": [
+    {
+      "port": 57718,
+      "listen": "0.0.0.0",
+      "protocol": "vmess",
+      "settings": {
+        "clients": [{ "id": "27848739-7e62-4138-9fd3-098a63964b6b" }],
+        "default": {
+          "level": 0,
+          "alterId": 4
+        },
+        "detour": {
+          "to": "direct"
+        },
+        "disableInsecureEncryption": true
+      },
+      "streamSettings": {},
+      "tag": "vmess-in-0",
+      "sniffing": {
+        "enabled": false,
+        "destOverride": ["http", "tls"]
+      },
+      "allocate": {
+        "strategy": "always",
+        "refresh": 5,
+        "concurrency": 4
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "sendThrough": "0.0.0.0",
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "userLevel": 0
+      },
+      "tag": "direct",
+      "streamSettings": {},
+      "proxySettings": {},
+      "mux": {
+        "enabled": true,
+        "concurrency": 8
+      }
+    }
+  ],
+  "transport": {}
+}

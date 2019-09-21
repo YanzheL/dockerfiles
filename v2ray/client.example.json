@@ -1,0 +1,66 @@
+{
+  "log": {
+    "loglevel": "info"
+  },
+  "api": {},
+  "dns": {},
+  "stats": {},
+  "routing": {
+    "domainStrategy": "AsIs",
+    "rules": [],
+    "balancers": []
+  },
+  "policy": {},
+  "reverse": {},
+  "inbounds": [
+    {
+      "port": 1080,
+      "listen": "127.0.0.1",
+      "protocol": "socks5",
+      "settings": {
+        "udp": true
+      },
+      "streamSettings": {},
+      "tag": "socks5-in-0",
+      "sniffing": {
+        "enabled": false,
+        "destOverride": ["http", "tls"]
+      },
+      "allocate": {
+        "strategy": "always",
+        "refresh": 5,
+        "concurrency": 4
+      }
+    }
+  ],
+  "outbounds": [
+    {
+      "sendThrough": "0.0.0.0",
+      "protocol": "vmess",
+      "settings": {
+        "vnext": [
+          {
+            "address": "abc.example.com",
+            "port": 57718,
+            "users": [
+              {
+                "id": "27848739-7e62-4138-9fd3-098a63964b6b",
+                "alterId": 4,
+                "security": "auto",
+                "level": 0
+              }
+            ]
+          }
+        ]
+      },
+      "tag": "vmess-out-0",
+      "streamSettings": {},
+      "proxySettings": {},
+      "mux": {
+        "enabled": true,
+        "concurrency": 8
+      }
+    }
+  ],
+  "transport": {}
+}
