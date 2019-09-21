@@ -47,6 +47,9 @@
       "streamSettings": {
         "network": "ws",
         "security": "tls",
+        "tlsSettings":{
+          "allowInsecure": true
+        },
         "wsSettings": {
           "path": "/"
         }
