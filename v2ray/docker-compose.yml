@@ -6,3 +6,5 @@ services:
     restart: always
     volumes:
       - ./config.json:/etc/v2ray/config.json
+      - ./encipherment.crt:/etc/v2ray/encipherment.crt
+      - ./encipherment.key:/etc/v2ray/encipherment.key

@@ -31,11 +31,11 @@
         "vnext": [
           {
             "address": "abc.example.com",
-            "port": 57718,
+            "port": 443,
             "users": [
               {
                 "id": "27848739-7e62-4138-9fd3-098a63964b6b",
-                "alterId":0,
+                "alterId": 16,
                 "security": "auto",
                 "level": 0
               }
@@ -44,7 +44,13 @@
         ]
       },
       "tag": "vmess-out-0",
-      "streamSettings": {},
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "path": "/"
+        }
+      },
       "mux": {
         "enabled": true,
         "concurrency": 8
