@@ -52,11 +52,7 @@
         "userLevel": 0
       },
       "tag": "direct",
-      "streamSettings": {},
-      "mux": {
-        "enabled": true,
-        "concurrency": 8
-      }
+      "streamSettings": {}
     }
   ],
   "transport": {}
