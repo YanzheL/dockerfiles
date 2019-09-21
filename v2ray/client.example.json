@@ -51,7 +51,6 @@
       },
       "tag": "vmess-out-0",
       "streamSettings": {},
-      "proxySettings": {},
       "mux": {
         "enabled": true,
         "concurrency": 8
