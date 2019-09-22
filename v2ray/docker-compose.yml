@@ -1,6 +1,6 @@
 version: '2.4'
 services:
-  v2ray:
+  v2ray-s:
     image: v2ray/official
     expose:
       - 80
@@ -9,3 +9,9 @@ services:
       - ./config.json:/etc/v2ray/config.json
     env_file:
       - web.env
+  v2ray-c:
+    image: v2ray/official
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config.json:/etc/v2ray/config.json
