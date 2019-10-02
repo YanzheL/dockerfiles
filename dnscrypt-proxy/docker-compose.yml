@@ -4,4 +4,3 @@ services:
     image: jedisct1/dnscrypt-server
     network_mode: host
     restart: always
-    command: init -N example.com -E 0.0.0.0:60053
