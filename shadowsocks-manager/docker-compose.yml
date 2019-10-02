@@ -5,6 +5,7 @@ services:
       shadowsocks/shadowsocks-libev
     restart: always
     network_mode: host
+    container_name: ssworker
     user: root
     command: ["ss-manager", "-m", "chacha20-ietf", "-u", "--manager-address", "127.0.0.1:6001"]
   ssmgr-s:
