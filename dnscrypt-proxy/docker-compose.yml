@@ -2,6 +2,7 @@ version: '3.6'
 services:
   dnscrypt-server:
     image: jedisct1/dnscrypt-server
+    container_name: dnscrypt-server
     ports: 
       - "60053:443"
     restart: always
