@@ -2,6 +2,7 @@ version: '2.4'
 services:
   v2ray-s:
     image: v2ray/official
+    container_name: v2ray-s
     expose:
       - 80
     restart: always
@@ -11,6 +12,7 @@ services:
       - web.env
   v2ray-c:
     image: v2ray/official
+    container_name: v2ray-c
     network_mode: host
     restart: always
     volumes:

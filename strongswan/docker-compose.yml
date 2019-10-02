@@ -1,8 +1,9 @@
 version: '3.6'
 services:
-  app:
+  strongswan:
     image: leeyanzhe/strongswan-docker
     network_mode: host
+    container_name: strongswan
     volumes:
       - ./config:/usr/local/etc
     restart: always

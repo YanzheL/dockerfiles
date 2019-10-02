@@ -2,6 +2,7 @@ version: "3.6"
 services:
   mtproxy:
     image: telegrammessenger/proxy
+    container_name: mtproxy
     restart: always
     ports:
       - "60443:443"

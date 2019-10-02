@@ -2,6 +2,7 @@ version: '3.6'
 services:
   gitlab:
     image: gitlab/gitlab-ee
+    container_name: gitlab
     volumes:
       - ./config:/etc/gitlab
       - ./logs:/var/log/gitlab

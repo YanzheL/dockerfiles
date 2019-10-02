@@ -3,6 +3,7 @@ services:
   sslocal:
     image:
       mritd/shadowsocks
+    container_name: sslocal
     secrets:
       - sslocal
     restart: always

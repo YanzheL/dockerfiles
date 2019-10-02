@@ -3,6 +3,7 @@ services:
   frps:
     image: leeyanzhe/frp
     network_mode: 'host'
+    container_name: frps
     volumes:
       - ./frps.ini:/etc/frp/frps.ini
     restart: always
@@ -10,6 +11,7 @@ services:
   frpc:
     image: leeyanzhe/frp
     network_mode: 'host'
+    container_name: frpc
     volumes:
       - ./frpc.ini:/etc/frp/frpc.ini
     restart: always
