@@ -88,6 +88,8 @@ map $http_upgrade $proxy_connection {
 
 # Apply fix for very long server names
 server_names_hash_bucket_size 128;
+# Do not limit size
+client_max_body_size 0;
 
 # Default dhparam
 {{ if (exists "/etc/nginx/dhparam/dhparam.pem") }}
@@ -122,6 +124,8 @@ include /etc/nginx/proxy.conf;
 # HTTP 1.1 support
 proxy_http_version 1.1;
 proxy_buffering off;
+proxy_read_timeout  36000s;
+proxy_send_timeout  36000s;
 proxy_set_header Host $http_host;
 proxy_set_header Upgrade $http_upgrade;
 proxy_set_header Connection $proxy_connection;
