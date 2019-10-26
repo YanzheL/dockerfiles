@@ -1,0 +1,11 @@
+version: '2.4'
+services:
+  omnisci:
+    image: omnisci/core-os-cuda:latest
+    ports: 
+      - '6273-6280:6273-6280'
+    container_name: omnisci
+    volumes:
+      - ./omnisci-storage:/omnisci-storage
+    restart: always
+    runtime: nvidia
