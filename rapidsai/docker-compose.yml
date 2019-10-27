@@ -1,0 +1,13 @@
+version: '2.4'
+services:
+  rapidsai:
+    image: rapidsai/rapidsai:cuda10.1-runtime-ubuntu18.04
+    ports: 
+      - '8888:8888'
+      - '8787:8787'
+      - '8786:8786'
+    container_name: rapidsai
+    volumes:
+      - ./data:/data
+    restart: always
+    runtime: nvidia
