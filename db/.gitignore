@@ -1,2 +1,4 @@
 *.key
 docker-compose.yml
+*-data
+*_db
