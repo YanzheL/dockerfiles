@@ -17,4 +17,6 @@ services:
     volumes:
       - ./omnisci-storage:/omnisci-storage
     restart: always
+    env_file:
+      - web.env
     # runtime: nvidia
