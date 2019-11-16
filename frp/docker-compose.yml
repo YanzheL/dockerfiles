@@ -1,8 +1,8 @@
-version: '3.6'
+version: 2.4
 services:
   frps:
     image: leeyanzhe/frp
-    network_mode: 'host'
+    network_mode: host
     container_name: frps
     volumes:
       - ./frps.ini:/etc/frp/frps.ini
@@ -10,7 +10,7 @@ services:
     command: ./frps -c frps.ini
   frpc:
     image: leeyanzhe/frp
-    network_mode: 'host'
+    network_mode: host
     container_name: frpc
     volumes:
       - ./frpc.ini:/etc/frp/frpc.ini
