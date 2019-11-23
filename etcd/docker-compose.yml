@@ -6,7 +6,7 @@ services:
     container_name: etcd
     volumes:
       - ./pki:/etc/etcd/pki/
-      - ./data:/data
+      - data:/data
     restart: always
     command:
       - etcd
@@ -21,3 +21,6 @@ services:
       - --data-dir=/data
     env_file: 
       - extra-args.env
+
+volumes:
+  data:
