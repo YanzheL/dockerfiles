@@ -1,2 +1,4 @@
-*.conf
 scripts/
+*.conf
+*.yml
+!template*
