@@ -12,7 +12,7 @@
         "downlinkOnly": 5,
         "statsUserUplink": true,
         "statsUserDownlink": true,
-        "bufferSize": 256000
+        "bufferSize": 32768
       }
     },
     "system": {

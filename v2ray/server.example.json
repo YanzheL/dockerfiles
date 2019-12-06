@@ -5,13 +5,13 @@
   "policy": {
     "levels": {
       "0": {
-        "handshake": 30,
-        "connIdle": 600,
+        "handshake": 10,
+        "connIdle": 300,
         "uplinkOnly": 5,
         "downlinkOnly": 5,
         "statsUserUplink": true,
         "statsUserDownlink": true,
-        "bufferSize": 256000
+        "bufferSize": 4096
       }
     },
     "system": {
