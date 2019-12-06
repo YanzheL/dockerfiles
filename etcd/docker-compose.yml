@@ -1,0 +1,26 @@
+version: "2.4"
+services:
+  etcd:
+    image: gcr.azk8s.cn/google_containers/etcd:3.3.15-0
+    network_mode: host
+    container_name: etcd
+    volumes:
+      - ./pki:/etc/etcd/pki/
+      - data:/data
+    restart: always
+    command:
+      - etcd
+      - --trusted-ca-file=/etc/etcd/pki/ca.crt
+      - --cert-file=/etc/etcd/pki/server.crt
+      - --key-file=/etc/etcd/pki/server.key
+      - --client-cert-auth=true
+      - --peer-trusted-ca-file=/etc/etcd/pki/ca.crt
+      - --peer-cert-file=/etc/etcd/pki/peer.crt
+      - --peer-key-file=/etc/etcd/pki/peer.key
+      - --peer-client-cert-auth=true
+      - --data-dir=/data
+    env_file: 
+      - extra-args.env
+
+volumes:
+  data:
