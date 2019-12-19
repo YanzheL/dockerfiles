@@ -3,6 +3,23 @@
     "loglevel": "info"
   },
   "stats": {},
+  "policy": {
+    "levels": {
+      "0": {
+        "handshake": 30,
+        "connIdle": 600,
+        "uplinkOnly": 5,
+        "downlinkOnly": 5,
+        "statsUserUplink": true,
+        "statsUserDownlink": true,
+        "bufferSize": 32768
+      }
+    },
+    "system": {
+      "statsInboundUplink": true,
+      "statsInboundDownlink": true
+    }
+  },
   "routing": {
     "domainStrategy": "AsIs",
     "rules": [],
