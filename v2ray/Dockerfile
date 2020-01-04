@@ -1,27 +1,18 @@
-FROM ubuntu:latest as builder
+FROM alpine:edge AS builder
 
-RUN apt-get update
-RUN apt-get install curl -y
-RUN curl -L -o /tmp/go.sh https://install.direct/go.sh
-RUN chmod +x /tmp/go.sh
-RUN /tmp/go.sh
+WORKDIR /app/v2ray
 
-FROM alpine:latest
+RUN apk add -U curl unzip \
+    && VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
+    && echo "Got latest version = $VERSION" \
+    && wget https://github.com/v2ray/v2ray-core/releases/download/v${VERSION}/v2ray-linux-64.zip \
+    && unzip v2ray-linux-64.zip \
+    && rm v2ray-linux-64.zip
 
-LABEL maintainer "Darian Raymond <admin@v2ray.com>"
+FROM alpine:edge
 
-COPY --from=builder /usr/bin/v2ray/v2ray /usr/bin/v2ray/
-COPY --from=builder /usr/bin/v2ray/v2ctl /usr/bin/v2ray/
-COPY --from=builder /usr/bin/v2ray/geoip.dat /usr/bin/v2ray/
-COPY --from=builder /usr/bin/v2ray/geosite.dat /usr/bin/v2ray/
-# COPY config.json /etc/v2ray/config.json
+COPY --from=builder /app/v2ray /app/v2ray
 
-RUN set -ex && \
-    apk --no-cache add ca-certificates && \
-    mkdir /var/log/v2ray/ &&\
-    chmod +x /usr/bin/v2ray/v2ctl && \
-    chmod +x /usr/bin/v2ray/v2ray
-
-ENV PATH /usr/bin/v2ray:$PATH
+ENV PATH /app/v2ray:$PATH
 
 CMD ["v2ray", "-config=/etc/v2ray/config.json"]
