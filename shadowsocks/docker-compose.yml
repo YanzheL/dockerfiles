@@ -18,6 +18,19 @@ services:
     environment:
       SS_CONFIG: "-c /run/secrets/sslocal -v"
       SS_MODULE: "ss-local"
+  ssserver:
+    image:
+      mritd/shadowsocks
+    container_name: ssserver
+    secrets:
+      - ssserver
+    restart: always
+    network_mode: host
+    environment:
+      SS_CONFIG: "-c /run/secrets/ssserver -v"
+      SS_MODULE: "ss-server"
 secrets:
   sslocal:
     file: ./sslocal.json
+  ssserver:
+    file: ./ssserver.json
