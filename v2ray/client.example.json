@@ -1,49 +1,37 @@
 {
-  "log": {
-    "loglevel": "info"
-  },
-  "stats": {},
-  "policy": {
-    "levels": {
-      "0": {
-        "handshake": 30,
-        "connIdle": 600,
-        "uplinkOnly": 5,
-        "downlinkOnly": 5,
-        "statsUserUplink": true,
-        "statsUserDownlink": true,
-        "bufferSize": 32768
-      }
-    },
-    "system": {
-      "statsInboundUplink": true,
-      "statsInboundDownlink": true
-    }
-  },
-  "routing": {
-    "domainStrategy": "AsIs",
-    "rules": [],
-    "balancers": []
-  },
   "inbounds": [
     {
+      "listen": "0.0.0.0",
       "port": 1080,
-      "listen": "127.0.0.1",
       "protocol": "socks",
       "settings": {
         "udp": true
       },
-      "tag": "socks-in-0",
-      "sniffing": {
-        "enabled": false,
-        "destOverride": ["http", "tls"]
-      }
+      "tag": "socks-in-0"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 1081,
+      "protocol": "http",
+      "settings": {
+        "timeout": 0,
+        "allowTransparent": true,
+        "userLevel": 0
+      },
+      "tag": "http-in-0"
     }
   ],
+  "log": {
+    "access": "none",
+    "loglevel": "info"
+  },
   "outbounds": [
     {
-      "sendThrough": "0.0.0.0",
+      "mux": {
+        "enabled": true
+      },
       "protocol": "vmess",
+      "sendThrough": "0.0.0.0",
       "settings": {
         "vnext": [
           {
@@ -51,31 +39,82 @@
             "port": 443,
             "users": [
               {
-                "id": "27848739-7e62-4138-9fd3-098a63964b6b",
                 "alterId": 16,
-                "security": "auto",
-                "level": 0
+                "id": "a03875ea-c636-4c6c-6666-bad8ea39f666",
+                "level": 0,
+                "security": "auto"
+              }
+            ]
+          },
+          {
+            "address": "abc.example.com",
+            "port": 443,
+            "users": [
+              {
+                "alterId": 16,
+                "id": "a03875ea-c636-4c6c-6666-bad8ea39f666",
+                "level": 0,
+                "security": "auto"
               }
             ]
           }
         ]
       },
-      "tag": "vmess-out-0",
       "streamSettings": {
         "network": "ws",
         "security": "tls",
-        "tlsSettings":{
+        "tlsSettings": {
           "allowInsecure": true
         },
         "wsSettings": {
-          "path": "/inbound"
+          "path": "/inbound",
+          "headers": {
+            "Host": "v2r.example.com"
+          }
         }
       },
-      "mux": {
-        "enabled": true,
-        "concurrency": 8
-      }
+      "tag": "vmess-out-0"
+    },
+    {
+      "protocol": "freedom",
+      "sendThrough": "0.0.0.0",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "userLevel": 0
+      },
+      "streamSettings": {},
+      "tag": "direct"
     }
   ],
+  "policy": {
+    "levels": {
+      "0": {
+        "bufferSize": 32768,
+        "connIdle": 600,
+        "handshake": 30,
+        "statsUserDownlink": true,
+        "statsUserUplink": true,
+        "uplinkOnly": 5,
+        "downlinkOnly": 5
+      }
+    },
+    "system": {
+      "statsInboundDownlink": true,
+      "statsInboundUplink": true
+    }
+  },
+  "routing": {
+    "balancers": [],
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "type": "field",
+        "domain": ["geosite:cn"],
+        "ip": ["geoip:cn", "geoip:private"],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "stats": {},
   "transport": {}
 }
