@@ -23,5 +23,5 @@ FROM gcr.io/distroless/static:latest
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
 WORKDIR /etc/v2ray
 COPY --from=downloader /etc/v2ray .
-ENTRYPOINT ["/etc/v2ray/v2ray"]
-CMD ["-config=/etc/v2ray/config.json"]
+ENV PATH /etc/v2ray:$PATH
+CMD ["v2ray", "-config=/etc/v2ray/config.json"]
