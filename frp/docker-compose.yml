@@ -7,7 +7,10 @@ services:
     volumes:
       - ./frps.ini:/etc/frp/frps.ini
     restart: always
-    command: ./frps -c frps.ini
+    command:
+      - frps
+      - -c
+      - frps.ini
   frpc:
     image: leeyanzhe/frp
     network_mode: host
@@ -15,4 +18,7 @@ services:
     volumes:
       - ./frpc.ini:/etc/frp/frpc.ini
     restart: always
-    command: ["./frpc", "-c", "frpc.ini"]
+    command:
+      - frpc
+      - -c
+      - frpc.ini
