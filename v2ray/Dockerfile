@@ -4,7 +4,7 @@ WORKDIR /etc/v2ray
 
 RUN apk add -U --no-cache curl
 
-RUN VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oP '\d\.\d+\.\d+') \
+RUN VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
     && echo "Got latest version = $VERSION" \
     && curl -Lo v2ray-linux-64.zip https://github.com/v2ray/v2ray-core/releases/download/v${VERSION}/v2ray-linux-64.zip \
     && unzip v2ray-linux-64.zip \
