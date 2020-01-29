@@ -1,4 +1,4 @@
-FROM alpine:3.11 AS builder
+FROM alpine:3.11 AS downloader
 
 WORKDIR /etc/v2ray
 
@@ -13,8 +13,7 @@ RUN VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep 
 # Use distroless as minimal base image to package the manager binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 FROM gcr.io/distroless/static:latest
-WORKDIR /
-COPY --from=builder /etc/v2ray /etc/v2ray
-VOLUME [ "/etc/v2ray/config.json" ]
+WORKDIR /etc/v2ray
+COPY --from=downloader /etc/v2ray .
 ENTRYPOINT ["/etc/v2ray/v2ray"]
 CMD ["-config=/etc/v2ray/config.json"]
