@@ -1,18 +1,20 @@
-FROM alpine:edge AS builder
+FROM alpine:3.11 AS builder
 
-WORKDIR /app/v2ray
+WORKDIR /etc/v2ray
 
-RUN apk add -U curl unzip \
-    && VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
+RUN apk add -U --no-cache curl
+
+RUN VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oP '\d\.\d+\.\d+') \
     && echo "Got latest version = $VERSION" \
-    && wget https://github.com/v2ray/v2ray-core/releases/download/v${VERSION}/v2ray-linux-64.zip \
+    && curl -Lo v2ray-linux-64.zip https://github.com/v2ray/v2ray-core/releases/download/v${VERSION}/v2ray-linux-64.zip \
     && unzip v2ray-linux-64.zip \
     && rm v2ray-linux-64.zip
 
-FROM alpine:edge
-
-COPY --from=builder /app/v2ray /app/v2ray
-
-ENV PATH /app/v2ray:$PATH
-
-CMD ["v2ray", "-config=/etc/v2ray/config.json"]
+# Use distroless as minimal base image to package the manager binary
+# Refer to https://github.com/GoogleContainerTools/distroless for more details
+FROM gcr.io/distroless/static:latest
+WORKDIR /
+COPY --from=builder /etc/v2ray /etc/v2ray
+VOLUME [ "/etc/v2ray/config.json" ]
+ENTRYPOINT ["/etc/v2ray/v2ray"]
+CMD ["-config=/etc/v2ray/config.json"]
