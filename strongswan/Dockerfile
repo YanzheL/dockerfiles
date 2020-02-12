@@ -1,19 +1,18 @@
-FROM alpine:edge AS builder
+FROM alpine:3.11 AS builder
 
-LABEL maintainer="Yanzhe Lee"
+RUN apk add \
+        build-base \
+        clang-dev \
+        curl-dev \
+        curl \
+        openssl-dev \
+        gmp-dev \
+        ca-certificates \
+        linux-headers \
+        lld \
+        llvm-dev
 
-ENV STRONGSWAN_VERSION 5.8.0
-
-RUN apk add build-base \
-            clang-dev \
-            curl-dev \
-            curl \
-            openssl-dev \
-            gmp-dev \
-            ca-certificates \
-            linux-headers \
-            lld \
-            llvm-dev
+ARG STRONGSWAN_VERSION=5.8.2
 
 RUN cd /tmp \
     && curl -L https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.gz | tar zxf - 
@@ -38,6 +37,7 @@ RUN ../configure \
         --enable-af-alg \
         --enable-bypass-lan \
         --enable-certexpire \
+        --enable-chapoly \
         --enable-constraints \
         --enable-counters \
         --enable-curl \
@@ -70,14 +70,19 @@ RUN ../configure \
 RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
     && make DESTDIR=/usr/src/app install
 
-FROM alpine:edge
+FROM alpine:3.11
 
-RUN apk add curl \
-            openssl \
-            gmp \
-            ip6tables \
-            ca-certificates \
-            iproute2
+LABEL maintainer="Yanzhe Lee"
+
+RUN apk add \
+        curl \
+        openssl \
+        gmp \
+        ip6tables \
+        ca-certificates \
+        iproute2 \
+        bash \
+        ack
 
 COPY --from=builder /usr/src/app /
 
