@@ -1,7 +1,7 @@
 version: "2.4"
 services:
   etcd:
-    image: gcr.azk8s.cn/google_containers/etcd:3.4.3-0
+    image: gcr.azk8s.cn/google_containers/etcd:3.4.3
     network_mode: host
     container_name: etcd
     volumes:
@@ -19,6 +19,9 @@ services:
       - --peer-key-file=/etc/etcd/pki/peer.key
       - --peer-client-cert-auth=true
       - --data-dir=/data
+      - --enable-v2=false
+      - --log-outputs=stderr
+      - --logger=zap
     env_file: 
       - extra-args.env
 
