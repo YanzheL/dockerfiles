@@ -3,10 +3,7 @@ services:
   nginx:
     image: nginx
     container_name: nginx
-    # network_mode: host
-    ports:
-      - 127.0.0.1:80:80
-      - 443:443
+    network_mode: host
     restart: always
     volumes:
       - ./certs:/etc/nginx/certs:ro
