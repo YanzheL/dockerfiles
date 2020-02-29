@@ -1,0 +1,16 @@
+version: '2.4'
+services:
+  trojan:
+    image: trojangfw/trojan:latest
+    container_name: trojan
+    restart: always
+    ports:
+      - 443:443
+    volumes:
+      - ./config.json:/etc/trojan/config.json
+      - ./ssl:/etc/trojan/ssl
+    networks:
+      - proxy
+networks:
+  proxy:
+    external: true
