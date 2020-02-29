@@ -3,7 +3,10 @@ services:
   nginx:
     image: nginx
     container_name: nginx
-    network_mode: host
+    # network_mode: host
+    ports:
+      - 127.0.0.1:80:80
+      - 443:443
     restart: always
     volumes:
       - ./certs:/etc/nginx/certs:ro
@@ -11,7 +14,7 @@ services:
 
   dockergen:
     image: jwilder/docker-gen
-    network_mode: host
+    # network_mode: host
     restart: always
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
     volumes_from:
