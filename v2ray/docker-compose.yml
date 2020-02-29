@@ -3,8 +3,7 @@ services:
   v2ray-s:
     image: leeyanzhe/v2ray:latest
     container_name: v2ray-s
-    expose:
-      - 80
+    network_mode: host
     restart: always
     volumes:
       - ./config.json:/etc/v2ray/config.json
