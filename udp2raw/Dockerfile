@@ -15,10 +15,11 @@ RUN git clone https://github.com/wangyu-/udp2raw-tunnel \
     && sed -i 's/cc_local=.*/cc_local=clang++/g' makefile \
     && OPT="-Wl,--strip-debug" make -j$(nproc) ${TARGET}
 
-
-FROM gcr.io/distroless/base:latest
+FROM alpine:3.11
 
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
+
+RUN apk add --no-cache libstdc++ iptables
 
 COPY --from=builder /tmp/udp2raw-tunnel/udp2raw_* /usr/bin/udp2raw
 
