@@ -22,6 +22,7 @@ RUN curl -Lo bazel-installer.sh https://github.com/bazelbuild/bazel/releases/dow
     && ./bazel-installer.sh \
     && rm *.sh
 
+ARG RELEASE_TAG=v4.22.1
 # Configurable arguments defined at build time. User can override them by docker build --build-arg ARG_NAME=ARG_VALUE
 # Default OS type = linux
 ARG OS=linux
@@ -30,6 +31,8 @@ ARG ARCH=amd64
 
 RUN go get -insecure -t v2ray.com/core/... \
     && cd src/v2ray.com/core \
+    && VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oP '\d\.\d+\.\d+') \
+    && git checkout tags/v${VERSION} \
     && bazel build --action_env=GOPATH=$GOPATH --action_env=PATH=$PATH //release:v2ray_${OS}_${ARCH}_package \
     && mkdir /etc/v2ray \
     && cd /etc/v2ray \

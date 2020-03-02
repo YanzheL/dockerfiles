@@ -1,7 +1,7 @@
 version: '2.4'
 services:
   v2ray-s:
-    image: leeyanzhe/v2ray:dev
+    image: leeyanzhe/v2ray:latest
     container_name: v2ray-s
     network_mode: host
     restart: always
