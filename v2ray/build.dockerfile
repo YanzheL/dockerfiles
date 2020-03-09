@@ -36,8 +36,7 @@ RUN go get -insecure -t v2ray.com/core/... \
     && bazel build --action_env=GOPATH=$GOPATH --action_env=PATH=$PATH //release:v2ray_${OS}_${ARCH}_package \
     && mkdir /etc/v2ray \
     && cd /etc/v2ray \
-    && unzip $GOPATH/src/v2ray.com/core/bazel-bin/release/*.zip \
-    && rm $GOPATH/src/v2ray.com/core/bazel-bin/release/*.zip
+    && unzip $GOPATH/src/v2ray.com/core/bazel-bin/release/*.zip
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
