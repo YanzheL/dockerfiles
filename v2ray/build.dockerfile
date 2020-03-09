@@ -22,7 +22,6 @@ RUN curl -Lo bazel-installer.sh https://github.com/bazelbuild/bazel/releases/dow
     && ./bazel-installer.sh \
     && rm *.sh
 
-ARG RELEASE_TAG=v4.22.1
 # Configurable arguments defined at build time. User can override them by docker build --build-arg ARG_NAME=ARG_VALUE
 # Default OS type = linux
 ARG OS=linux
