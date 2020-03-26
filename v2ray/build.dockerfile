@@ -3,7 +3,7 @@ FROM ubuntu:18.04 AS builder
 RUN apt -y update \
     && apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ENV GOLANG_VERSION 1.14
+ENV GOLANG_VERSION 1.14.1
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
