@@ -10,7 +10,7 @@ services:
       - ./certs:/etc/nginx/certs:ro
       - ./conf.d:/etc/nginx/conf.d
 
-  dockergen-http:
+  dockergen:
     image: jwilder/docker-gen
     network_mode: host
     restart: always
