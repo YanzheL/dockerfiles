@@ -7,7 +7,6 @@ services:
     restart: always
     volumes:
       - ./config.json:/etc/v2ray/config.json
-      - /var/run/v2ray:/var/run/v2ray
     env_file:
       - web.env
   v2ray-c:
