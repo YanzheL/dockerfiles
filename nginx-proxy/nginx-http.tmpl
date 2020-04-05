@@ -83,9 +83,11 @@ ssl_dhparam /etc/nginx/dhparam/dhparam.pem;
 
 gzip_types text/plain text/css application/javascript application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
 
-log_format vhost '$host $remote_addr - $remote_user [$time_local] '
-                 '"$request" $status $body_bytes_sent '
-                 '"$http_referer" "$http_user_agent"';
+log_format vhost	'$remote_addr - $remote_user [$time_local] '
+					'$ssl_protocol/$ssl_cipher '
+					'"$request" $status $body_bytes_sent '
+					'"$http_referer" "$http_user_agent"'
+					'"$http_x_forwarded_for"';
 
 access_log off;
 
