@@ -1,6 +1,6 @@
 FROM alpine:3.11 AS builder
 
-RUN apk add \
+RUN apk add --no-cache \
         build-base \
         clang-dev \
         curl-dev \
@@ -12,20 +12,28 @@ RUN apk add \
         lld \
         llvm-dev
 
-ARG STRONGSWAN_VERSION=5.8.2
+ARG STRONGSWAN_VERSION=5.8.4
 
-RUN cd /tmp \
-    && curl -L https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.gz | tar zxf - 
+RUN cd /tmp && \
+    curl -L https://download.strongswan.org/strongswan-${STRONGSWAN_VERSION}.tar.gz | tar zxf - 
 
 WORKDIR /tmp/strongswan-${STRONGSWAN_VERSION}/build
 
-ENV CC clang
-ENV CXX clang++
-ENV LD ld.lld
-ENV AR llvm-ar
-ENV AS llvm-as
-ENV CPPFLAGS "-flto"
-ENV CFLAGS "-flto"
+ENV CC=clang
+ENV CXX=clang-cpp
+ENV LD=ld.lld
+ENV AR=llvm-ar
+ENV AS=llvm-as
+ENV NM=llvm-nm
+ENV STRIP=llvm-strip
+ENV OBJCOPY=llvm-objcopy
+ENV OBJDUMP=llvm-objdump
+ENV OBJSIZE=llvm-size
+ENV READELF=llvm-readelf
+ENV LDFLAGS="-Wl,--strip-debug"
+ENV CPPFLAGS="-flto -O3"
+# ENV CPPFLAGS="-flto -fsanitize=cfi -fvisibility=hidden"
+ENV CFLAGS=$CPPFLAGS
 
 RUN ../configure \
         --disable-stroke \
@@ -67,14 +75,14 @@ RUN ../configure \
         --enable-sha3 \
         --enable-tpm
 
-RUN make -j$(cat /proc/cpuinfo | awk '/^processor/{print $3}' | wc -l) \
-    && make DESTDIR=/usr/src/app install
+RUN make -j$(nproc) && \
+    make DESTDIR=/usr/src/app install
 
 FROM alpine:3.11
 
-LABEL maintainer="Yanzhe Lee"
+LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
 
-RUN apk add \
+RUN apk add --no-cache \
         curl \
         openssl \
         gmp \

@@ -1,7 +1,7 @@
 version: '3.6'
 services:
   strongswan:
-    image: leeyanzhe/strongswan-docker
+    image: leeyanzhe/strongswan
     network_mode: host
     container_name: strongswan
     volumes:
