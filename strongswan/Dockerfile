@@ -31,7 +31,7 @@ ENV OBJDUMP=llvm-objdump
 ENV OBJSIZE=llvm-size
 ENV READELF=llvm-readelf
 ENV LDFLAGS="-Wl,--strip-debug"
-ENV CPPFLAGS="-flto -O3"
+ENV CPPFLAGS="-flto"
 # ENV CPPFLAGS="-flto -fsanitize=cfi -fvisibility=hidden"
 ENV CFLAGS=$CPPFLAGS
 
