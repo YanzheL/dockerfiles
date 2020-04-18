@@ -25,4 +25,8 @@ RUN set -eux \
        done \
     && chmod +x /usr/local/bin/gu
 
+ENV GRAALVM_VERSION=${GRAALVM_VERSION}
+ENV JAVA_VERSION=${JAVA_VERSION}
+ENV TARGETPLATFORM=${TARGETPLATFORM}
+
 CMD ["java", "-version"]
