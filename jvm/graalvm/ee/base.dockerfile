@@ -1,6 +1,6 @@
 FROM registry.access.redhat.com/ubi8/ubi
 
-ARG GRAALVM_VERSION=20.0.1
+ARG GRAALVM_VERSION
 ARG JAVA_VERSION=java11
 ARG TARGETPLATFORM=linux-amd64
 

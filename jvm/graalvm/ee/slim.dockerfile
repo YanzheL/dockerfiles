@@ -3,7 +3,7 @@ FROM registry.access.redhat.com/ubi8/ubi-minimal
 # Note: If you are behind a web proxy, set the build variables for the build:
 #       E.g.:  docker build --build-arg "https_proxy=..." --build-arg "http_proxy=..." --build-arg "no_proxy=..." ...
 
-ARG GRAALVM_VERSION=20.0.1
+ARG GRAALVM_VERSION
 ARG JAVA_VERSION=java11
 ARG TARGETPLATFORM=linux-amd64
 

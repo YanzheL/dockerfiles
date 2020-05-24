@@ -1,16 +1,18 @@
 #!/bin/bash
-
+GRAALVM_VERSION=20.1.0
 docker build \
-    -t leeyanzhe/graalvm:ee-java11 -t leeyanzhe/graalvm:ee-java11-20.0.1 \
+    --build-arg GRAALVM_VERSION=${GRAALVM_VERSION} \
+    -t leeyanzhe/jvm:graalvm-ee-java11 -t leeyanzhe/jvm:graalvm-ee-java11-${GRAALVM_VERSION} \
     -f ee/base.dockerfile \
     .
 
 docker build \
-    -t leeyanzhe/graalvm:ee-java11-full -t leeyanzhe/graalvm:ee-java11-20.0.1-full \
+    --build-arg GRAALVM_VERSION=${GRAALVM_VERSION} \
+    -t leeyanzhe/jvm:graalvm-ee-java11-full -t leeyanzhe/jvm:graalvm-ee-java11-${GRAALVM_VERSION}-full \
     -f ee/full.dockerfile \
     .
 
-docker push leeyanzhe/graalvm:ee-java11-20.0.1
-docker push leeyanzhe/graalvm:ee-java11
-docker push leeyanzhe/graalvm:ee-java11-20.0.1-full
-docker push leeyanzhe/graalvm:ee-java11-full
+docker push leeyanzhe/jvm:graalvm-ee-java11-${GRAALVM_VERSION}
+docker push leeyanzhe/jvm:graalvm-ee-java11
+docker push leeyanzhe/jvm:graalvm-ee-java11-${GRAALVM_VERSION}-full
+docker push leeyanzhe/jvm:graalvm-ee-java11-full
