@@ -41,7 +41,7 @@ RUN go get -insecure -t v2ray.com/core/... && \
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
-# Note: Use gcr.azk8s.cn as repo-mirror if gcr.io is blocked by China GFW.
+# Note: Use gcr.mirrors.ustc.edu.cn as repo-mirror if gcr.io is blocked by China GFW.
 FROM gcr.io/distroless/base:latest
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
 WORKDIR /etc/v2ray

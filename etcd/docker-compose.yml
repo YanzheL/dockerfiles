@@ -1,7 +1,7 @@
 version: "2.4"
 services:
   etcd:
-    image: gcr.azk8s.cn/google_containers/etcd:3.4.3
+    image: gcr.mirrors.ustc.edu.cn/google_containers/etcd:3.4.3
     network_mode: host
     container_name: etcd
     volumes:
