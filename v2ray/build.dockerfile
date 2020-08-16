@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
     apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ARG GOLANG_VERSION=1.14.4
+ARG GOLANG_VERSION=1.15
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
@@ -42,7 +42,7 @@ RUN go get -insecure -t v2ray.com/core/... && \
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
-# Note: Use gcr.mirrors.ustc.edu.cn as repo-mirror if gcr.io is blocked by China GFW.
+# Note: Use registry.aliyuncs.com as repo-mirror if gcr.io is blocked by China GFW.
 FROM gcr.io/distroless/base:latest
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
 WORKDIR /etc/v2ray
