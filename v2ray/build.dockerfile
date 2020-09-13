@@ -30,11 +30,13 @@ ARG OS=linux
 # Default architecture = 64
 ARG ARCH=amd64
 
-RUN go get -insecure -t v2ray.com/core/... && \
+RUN mkdir ./src && \
+    mkdir ./src/v2ray.com && \
+    git clone https://github.com/v2ray/v2ray-core ./src/v2ray.com/core && \
+    go get -v -t -d ./src/v2ray.com/core/... && \
     cd src/v2ray.com/core && \
     VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oP '\d\.\d+\.\d+') && \
     git checkout tags/v${VERSION} && \
-    ./release/updatedat.sh && \
     bazel build --action_env=GOPATH=$GOPATH --action_env=PATH=$PATH --action_env=SPWD=$PWD --action_env=GOCACHE=$(go env GOCACHE) //release:v2ray_${OS}_${ARCH}_package && \
     mkdir /etc/v2ray && \
     cd /etc/v2ray && \
