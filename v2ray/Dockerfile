@@ -10,7 +10,7 @@ ARG OS=linux
 ARG ARCH=64
 # Download and unpack latest release from official github release
 RUN V2RAY_FILE=v2ray-${OS}-${ARCH}.zip \
-    VERSION=$(curl -s https://github.com/v2ray/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
+    VERSION=$(curl -s https://github.com/v2fly/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
     && echo "Got latest version = ${VERSION}, file = ${V2RAY_FILE}" \
     && curl -Lo $V2RAY_FILE https://github.com/v2ray/v2ray-core/releases/download/v${VERSION}/$V2RAY_FILE \
     && unzip $V2RAY_FILE \
@@ -18,7 +18,7 @@ RUN V2RAY_FILE=v2ray-${OS}-${ARCH}.zip \
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
-# Note: Use gcr.mirrors.ustc.edu.cn as repo-mirror if gcr.io is blocked by China GFW.
+# Note: Use registry.aliyuncs.com as repo-mirror if gcr.io is blocked by China GFW.
 FROM gcr.io/distroless/base:latest
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
 WORKDIR /etc/v2ray
