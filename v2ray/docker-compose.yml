@@ -7,8 +7,7 @@ services:
     restart: always
     volumes:
       - ./config.json:/etc/v2ray/config.json
-    env_file:
-      - web.env
+      - ./ssl:/etc/v2ray/ssl
   v2ray-c:
     image: leeyanzhe/v2ray:latest
     container_name: v2ray-c
