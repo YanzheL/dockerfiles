@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
     apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ARG GOLANG_VERSION=1.15.2
+ARG GOLANG_VERSION=1.15.4
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
