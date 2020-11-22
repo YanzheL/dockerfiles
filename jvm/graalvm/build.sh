@@ -1,5 +1,5 @@
 #!/bin/bash
-GRAALVM_VERSION=20.1.0
+GRAALVM_VERSION=20.3.0
 docker build \
     --build-arg GRAALVM_VERSION=${GRAALVM_VERSION} \
     -t leeyanzhe/jvm:graalvm-ee-java11 -t leeyanzhe/jvm:graalvm-ee-java11-${GRAALVM_VERSION} \

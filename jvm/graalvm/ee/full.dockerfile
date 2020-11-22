@@ -1,4 +1,4 @@
-FROM leeyanzhe/graalvm:ee-java11
+FROM leeyanzhe/jvm:graalvm-ee-java11
 
 ARG GRAALVM_VERSION
 ARG JAVA_VERSION=java11
