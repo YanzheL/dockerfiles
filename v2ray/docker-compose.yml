@@ -1,7 +1,7 @@
 version: '2.4'
 services:
   v2ray-s:
-    image: leeyanzhe/v2ray:latest
+    image: leeyanzhe/v2ray:4.32.1
     container_name: v2ray-s
     network_mode: host
     restart: always
@@ -9,7 +9,7 @@ services:
       - ./config.json:/etc/v2ray/config.json
       - ./ssl:/etc/v2ray/ssl
   v2ray-c:
-    image: leeyanzhe/v2ray:latest
+    image: leeyanzhe/v2ray:4.32.1
     container_name: v2ray-c
     network_mode: host
     restart: always
