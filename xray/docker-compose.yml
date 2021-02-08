@@ -1,0 +1,17 @@
+version: '2.4'
+services:
+  xray-s:
+    image: leeyanzhe/xray
+    container_name: xray-s
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config.json:/etc/xray/config.json
+      - ./ssl:/etc/xray/ssl
+  xray-c:
+    image: leeyanzhe/xray
+    container_name: xray-c
+    network_mode: host
+    restart: always
+    volumes:
+      - ./config.json:/etc/xray/config.json

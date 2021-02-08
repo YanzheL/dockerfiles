@@ -1,0 +1,4 @@
+config.json
+*.crt
+*.key
+*.env
