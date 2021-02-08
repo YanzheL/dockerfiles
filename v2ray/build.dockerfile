@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
     apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ARG GOLANG_VERSION=1.15.4
+ARG GOLANG_VERSION=1.15.8
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
@@ -30,7 +30,7 @@ ARG OS=linux
 # Default architecture = 64
 ARG ARCH=amd64
 
-RUN mkdir ./src/v2ray.com && \
+RUN mkdir -p ./src/v2ray.com && \
     git clone https://github.com/v2fly/v2ray-core ./src/v2ray.com/core && \
     go get -v -t -d ./src/v2ray.com/core/... && \
     cd src/v2ray.com/core && \
