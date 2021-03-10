@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
     apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ARG GOLANG_VERSION=1.15.8
+ARG GOLANG_VERSION=1.16
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
@@ -24,7 +24,9 @@ RUN mkdir -p ./src/xray/core && \
     git checkout tags/v${VERSION} && \
     go build -o xray -trimpath -ldflags "-s -w -buildid=" ./main && \
     mkdir /etc/xray && \
-    mv xray /etc/xray/
+    mv xray /etc/xray/ && \
+    curl -L https://github.com/v2fly/geoip/releases/latest/download/geoip.dat -o /etc/xray/geoip.dat && \
+    curl -L https://github.com/v2fly/domain-list-community/releases/latest/download/dlc.dat -o /etc/xray/geosite.dat
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
