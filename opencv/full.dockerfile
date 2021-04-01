@@ -68,6 +68,9 @@ WORKDIR /usr/src/opencv-${OPENCV_VERSION}/build
 ARG CUDA_ARCH_BIN="6.1,6.2,7.0,7.2,7.5,8.0,8.6"
 ENV CUDA_ARCH_BIN=${CUDA_ARCH_BIN}
 
+ARG BUILD_SHARED_LIBS=ON
+ARG BUILD_opencv_world=OFF
+
 # Configure
 RUN \
     # . /opt/intel/openvino/bin/setupvars.sh && \
@@ -79,8 +82,8 @@ RUN \
         -DOPENCV_ENABLE_NONFREE=ON \
         -DOPENCV_GENERATE_PKGCONFIG=ON \
         -DENABLE_THIN_LTO=ON \
-        -DBUILD_SHARED_LIBS=ON \
-        -DBUILD_opencv_world=ON \
+        -DBUILD_SHARED_LIBS=${BUILD_SHARED_LIBS} \
+        -DBUILD_opencv_world=${BUILD_opencv_world} \
         -DBUILD_opencv_cvv=OFF \
         -DBUILD_opencv_gapi=OFF \
         -DBUILD_opencv_python2=OFF \
@@ -103,7 +106,7 @@ RUN \
         -DCUDA_NVCC_FLAGS="-allow-unsupported-compiler" \
         -DCMAKE_INSTALL_PREFIX=/opt/opencv \
         -L \
-        .. | tee CurrentConfig.txt
+        .. | tee BuildConfig.txt
 
 # Build
 RUN \
@@ -113,7 +116,9 @@ RUN \
 # Install
 RUN \
     # . /opt/intel/openvino/bin/setupvars.sh && \
-    make DESTDIR=/builder-destdir install/strip
+    make DESTDIR=/builder-destdir install/strip && \
+    cp BuildConfig.txt /builder-destdir/opt/opencv/ && \
+    cp /builder-destdir/ /
 
 
 
