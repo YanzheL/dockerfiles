@@ -1,16 +1,21 @@
-FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 as opencv_builder
+FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 as builder
+
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
 ENV DEBIAN_FRONTEND noninteractive
 
 # Base dependencies
 RUN apt -y update && \
-    apt -y install \
+    apt --no-install-recommends -y install \
         cmake \
         clang \
         llvm \
         lld \
         clang-tools \
         curl \
+        git \
+        git-lfs \
+        python3-dev \
         python3-pip \
         default-jdk \
         ant && \
@@ -32,19 +37,19 @@ ENV CC=clang \
     OBJSIZE=llvm-size \
     READELF=llvm-readelf
 
-SHELL ["/bin/bash", "-c"]
+FROM builder as opencv_builder
 
 # Optional dependencies
-RUN apt -y install \
-    libceres-dev \
-    libavcodec-dev \
-    libavformat-dev \
-    libavutil-dev \
-    libswscale-dev \
-    libavresample-dev \
-    libgstreamer1.0-dev \
-    libgstreamer-plugins-base1.0-dev \
-    libgstreamer-plugins-good1.0-dev
+RUN apt --no-install-recommends -y install \
+        libceres-dev \
+        libavcodec-dev \
+        libavformat-dev \
+        libavutil-dev \
+        libswscale-dev \
+        libavresample-dev \
+        libgstreamer1.0-dev \
+        libgstreamer-plugins-base1.0-dev \
+        libgstreamer-plugins-good1.0-dev
 
 ARG OPENCV_VERSION=4.5.1
 ENV OPENCV_VERSION=${OPENCV_VERSION}
@@ -55,7 +60,8 @@ RUN curl -vL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION
     curl -vL https://github.com/opencv/opencv_contrib/archive/refs/tags/${OPENCV_VERSION}.tar.gz | tar xvz
 
 # Optional OpenVINO for GAPI
-COPY --from=openvino/ubuntu20_dev:2021.3_src /opt/intel/ /opt/intel/
+# COPY --from=openvino/ubuntu20_dev:2021.3_src /opt/intel/ /builder-destdir/opt/intel/
+# RUN ln -s /builder-destdir/opt/intel /opt/intel
 
 WORKDIR /usr/src/opencv-${OPENCV_VERSION}/build
 
@@ -63,7 +69,8 @@ ARG CUDA_ARCH_BIN="6.1,6.2,7.0,7.2,7.5,8.0,8.6"
 ENV CUDA_ARCH_BIN=${CUDA_ARCH_BIN}
 
 # Configure
-RUN . /opt/intel/openvino/bin/setupvars.sh && \
+RUN \
+    # . /opt/intel/openvino/bin/setupvars.sh && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
         -DPYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 \
@@ -75,7 +82,7 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
         -DBUILD_SHARED_LIBS=ON \
         -DBUILD_opencv_world=ON \
         -DBUILD_opencv_cvv=OFF \
-        -DBUILD_opencv_gapi=ON \
+        -DBUILD_opencv_gapi=OFF \
         -DBUILD_opencv_python2=OFF \
         -DBUILD_opencv_python3=ON \
         -DBUILD_opencv_cudalegacy=OFF \
@@ -88,8 +95,8 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
         -DWITH_OPENGL=ON \
         -DWITH_QT=OFF \
         -DWITH_VULKAN=ON \
-        -DWITH_INF_ENGINE=ON \
-        -DINF_ENGINE_RELEASE=2021030000 \
+        # -DWITH_INF_ENGINE=ON \
+        # -DINF_ENGINE_RELEASE=2021030000 \
         -DCUDA_ARCH_BIN="${CUDA_ARCH_BIN}" \
         -DPYTHON3_INCLUDE_DIR=/usr/include/python3.8 \
         -DPYTHON3_PACKAGES_PATH=/usr/lib/python3.8/site-packages \
@@ -99,12 +106,14 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
         .. | tee CurrentConfig.txt
 
 # Build
-RUN . /opt/intel/openvino/bin/setupvars.sh && \
+RUN \
+    # . /opt/intel/openvino/bin/setupvars.sh && \
     make -j"${jobs:-$(nproc)}"
 
 # Install
-RUN . /opt/intel/openvino/bin/setupvars.sh && \
-    make DESTDIR=/opt/opencv-install install/strip
+RUN \
+    # . /opt/intel/openvino/bin/setupvars.sh && \
+    make DESTDIR=/builder-destdir install/strip
 
 
 
@@ -124,7 +133,4 @@ RUN apt -y update && \
         libgstreamer-plugins-base1.0-0 \
         libgstreamer-plugins-good1.0-0
 
-# SHELL ["/bin/bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh"]
-
-COPY --from=openvino/ubuntu20_dev:2021.3 /opt/intel/ /opt/intel/
-COPY --from=opencv_builder /opt/opencv-install/ /
+COPY --from=opencv_builder /builder-destdir/ /
