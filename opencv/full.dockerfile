@@ -1,11 +1,23 @@
-FROM nvidia/cuda:11.2.1-cudnn8-devel-ubuntu20.04 as opencv_builder
+FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 as opencv_builder
 
 ENV DEBIAN_FRONTEND noninteractive
 
 # Base dependencies
 RUN apt -y update && \
-    apt -y install cmake clang llvm lld clang-tools curl python3-pip && \
+    apt -y install \
+        cmake \
+        clang \
+        llvm \
+        lld \
+        clang-tools \
+        curl \
+        python3-pip \
+        default-jdk \
+        ant && \
     pip3 install scipy
+
+ENV ANT_HOME /usr/share/ant
+ENV JAVA_HOME /usr/lib/jvm/default-java
 
 # Use llvm toolchain instead of the default gcc
 ENV CC=clang \
@@ -19,6 +31,8 @@ ENV CC=clang \
     OBJDUMP=llvm-objdump \
     OBJSIZE=llvm-size \
     READELF=llvm-readelf
+
+SHELL ["/bin/bash", "-c"]
 
 # Optional dependencies
 RUN apt -y install \
@@ -41,14 +55,12 @@ RUN curl -vL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION
     curl -vL https://github.com/opencv/opencv_contrib/archive/refs/tags/${OPENCV_VERSION}.tar.gz | tar xvz
 
 # Optional OpenVINO for GAPI
-COPY --from=openvino/ubuntu20_dev /opt/intel/ /opt/intel/
+COPY --from=openvino/ubuntu20_dev:2021.3_src /opt/intel/ /opt/intel/
 
 WORKDIR /usr/src/opencv-${OPENCV_VERSION}/build
 
 ARG CUDA_ARCH_BIN="6.1,6.2,7.0,7.2,7.5,8.0,8.6"
 ENV CUDA_ARCH_BIN=${CUDA_ARCH_BIN}
-
-# SHELL ["/bin/bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh"]
 
 # Configure
 RUN . /opt/intel/openvino/bin/setupvars.sh && \
@@ -60,9 +72,10 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
         -DOPENCV_ENABLE_NONFREE=ON \
         -DOPENCV_GENERATE_PKGCONFIG=ON \
         -DENABLE_THIN_LTO=ON \
+        -DBUILD_SHARED_LIBS=ON \
         -DBUILD_opencv_world=ON \
         -DBUILD_opencv_cvv=OFF \
-        -DBUILD_opencv_gapi=OFF \
+        -DBUILD_opencv_gapi=ON \
         -DBUILD_opencv_python2=OFF \
         -DBUILD_opencv_python3=ON \
         -DBUILD_opencv_cudalegacy=OFF \
@@ -75,14 +88,15 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
         -DWITH_OPENGL=ON \
         -DWITH_QT=OFF \
         -DWITH_VULKAN=ON \
-        -DWITH_INF_ENGINE=ON -DINF_ENGINE_RELEASE=2021030000 \
+        -DWITH_INF_ENGINE=ON \
+        -DINF_ENGINE_RELEASE=2021030000 \
         -DCUDA_ARCH_BIN="${CUDA_ARCH_BIN}" \
         -DPYTHON3_INCLUDE_DIR=/usr/include/python3.8 \
         -DPYTHON3_PACKAGES_PATH=/usr/lib/python3.8/site-packages \
         -DCUDA_NVCC_FLAGS="-allow-unsupported-compiler" \
         -DCMAKE_INSTALL_PREFIX=/opt/opencv \
         -L \
-        ..
+        .. | tee CurrentConfig.txt
 
 # Build
 RUN . /opt/intel/openvino/bin/setupvars.sh && \
@@ -94,7 +108,7 @@ RUN . /opt/intel/openvino/bin/setupvars.sh && \
 
 
 
-FROM nvidia/cuda:11.2.1-cudnn8-runtime-ubuntu20.04 as runtime
+FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04 as runtime
 
 ENV DEBIAN_FRONTEND noninteractive
 
@@ -112,5 +126,5 @@ RUN apt -y update && \
 
 # SHELL ["/bin/bash", "-c", "source /opt/intel/openvino/bin/setupvars.sh"]
 
-COPY --from=openvino/ubuntu20_dev /opt/intel/ /opt/intel/
+COPY --from=openvino/ubuntu20_dev:2021.3 /opt/intel/ /opt/intel/
 COPY --from=opencv_builder /opt/opencv-install/ /
