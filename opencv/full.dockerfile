@@ -118,7 +118,8 @@ RUN \
     # . /opt/intel/openvino/bin/setupvars.sh && \
     make DESTDIR=/builder-destdir install/strip && \
     cp BuildConfig.txt /builder-destdir/opt/opencv/ && \
-    make install/strip
+    make install/strip && \
+    cp BuildConfig.txt /opt/opencv/
 
 
 
