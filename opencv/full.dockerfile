@@ -124,6 +124,8 @@ RUN \
 
 FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04 as runtime
 
+SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
+
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt -y update && \
