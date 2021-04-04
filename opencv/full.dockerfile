@@ -142,3 +142,7 @@ RUN apt -y update && \
         libgstreamer-plugins-good1.0-0
 
 COPY --from=opencv_builder /builder-destdir/ /
+
+ENV LD_LIBRARY_PATH /usr/local/cuda/compat:/opt/opencv/lib:${LD_LIBRARY_PATH}
+
+ENV PATH /opt/opencv/bin:${PATH}
