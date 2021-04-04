@@ -60,8 +60,8 @@ RUN curl -vL https://github.com/opencv/opencv/archive/refs/tags/${OPENCV_VERSION
     curl -vL https://github.com/opencv/opencv_contrib/archive/refs/tags/${OPENCV_VERSION}.tar.gz | tar xvz
 
 # Optional OpenVINO for GAPI
-# COPY --from=openvino/ubuntu20_dev:2021.3_src /opt/intel/ /builder-destdir/opt/intel/
-# RUN ln -s /builder-destdir/opt/intel /opt/intel
+# COPY --from=openvino/ubuntu20_dev:2021.3_src /opt/intel/ /opencv_builder/opt/intel/
+# RUN ln -s /opencv_builder/opt/intel /opt/intel
 
 WORKDIR /usr/src/opencv-${OPENCV_VERSION}/build
 
@@ -116,8 +116,8 @@ RUN \
 # Install
 RUN \
     # . /opt/intel/openvino/bin/setupvars.sh && \
-    make DESTDIR=/builder-destdir install/strip && \
-    cp BuildConfig.txt /builder-destdir/opt/opencv/ && \
+    make DESTDIR=/opencv_builder install/strip && \
+    cp BuildConfig.txt /opencv_builder/opt/opencv/ && \
     make install/strip && \
     cp BuildConfig.txt /opt/opencv/
 
@@ -141,8 +141,10 @@ RUN apt -y update && \
         libgstreamer-plugins-base1.0-0 \
         libgstreamer-plugins-good1.0-0
 
-COPY --from=opencv_builder /builder-destdir/ /
+COPY --from=opencv_builder /opencv_builder/ /
 
 ENV LD_LIBRARY_PATH /usr/local/cuda/compat:/opt/opencv/lib:${LD_LIBRARY_PATH}
 
 ENV PATH /opt/opencv/bin:${PATH}
+
+CMD [ "opencv_version" ]
