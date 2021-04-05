@@ -29,9 +29,9 @@ RUN \
 
 FROM leeyanzhe/opencv:runtime
 
-ENV LD_LIBRARY_PATH /usr/local/cuda/compat:/opt/opencv/lib:/opt/darknet/lib:${LD_LIBRARY_PATH}
+ENV LD_LIBRARY_PATH /opt/darknet/lib:${LD_LIBRARY_PATH}
 
-ENV PATH /opt/opencv/bin:/opt/darknet/bin:${PATH}
+ENV PATH /opt/darknet/bin:${PATH}
 
 COPY --from=darknet_builder /darknet_builder/ /
 
