@@ -49,7 +49,8 @@ RUN apt --no-install-recommends -y install \
         libavresample-dev \
         libgstreamer1.0-dev \
         libgstreamer-plugins-base1.0-dev \
-        libgstreamer-plugins-good1.0-dev
+        libgstreamer-plugins-good1.0-dev \
+        libtesseract-dev
 
 ARG OPENCV_VERSION=4.5.1
 ENV OPENCV_VERSION=${OPENCV_VERSION}
@@ -76,7 +77,7 @@ RUN \
     # . /opt/intel/openvino/bin/setupvars.sh && \
     cmake \
         -DCMAKE_BUILD_TYPE=Release \
-        -DPYTHON_DEFAULT_EXECUTABLE=/usr/bin/python3 \
+        -DPYTHON_DEFAULT_EXECUTABLE="$(which python3)" \
         -DOPENCV_EXTRA_MODULES_PATH=../../opencv_contrib-${OPENCV_VERSION}/modules \
         -DOPENCV_DNN_CUDA=ON \
         -DOPENCV_ENABLE_NONFREE=ON \
@@ -139,7 +140,8 @@ RUN apt -y update && \
         libavresample4 \
         libgstreamer1.0-0 \
         libgstreamer-plugins-base1.0-0 \
-        libgstreamer-plugins-good1.0-0
+        libgstreamer-plugins-good1.0-0 \
+        libtesseract4
 
 COPY --from=opencv_builder /opencv_builder/ /
 
