@@ -1,0 +1,158 @@
+{
+  "reverse": {
+    "bridges": [
+      {
+        "tag": "bridge",
+        "domain": "portal0.localhost"
+      }
+    ]
+  },
+  "inbounds": [
+    {
+      "listen": "0.0.0.0",
+      "port": 1080,
+      "protocol": "socks",
+      "settings": {
+        "udp": true
+      },
+      "tag": "socks-in-0"
+    },
+    {
+      "listen": "0.0.0.0",
+      "port": 1081,
+      "protocol": "http",
+      "settings": {
+        "timeout": 0,
+        "allowTransparent": true,
+        "userLevel": 0
+      },
+      "tag": "http-in-0"
+    }
+  ],
+  "log": {
+    "access": "none",
+    "loglevel": "info"
+  },
+  "outbounds": [
+    {
+      "protocol": "vless",
+      "mux": {
+        "enabled": false
+      },
+      "sendThrough": "0.0.0.0",
+      "settings": {
+        "vnext": [
+          {
+            "address": "abc.example.com",
+            "port": 443,
+            "users": [
+              {
+                "alterId": 0,
+                "id": "a03875ea-c636-4c6c-6666-bad8ea39f666",
+                "level": 0,
+                "flow": "xtls-rprx-direct",
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "tcp",
+        "security": "xtls",
+        "xtlsSettings": {
+          "allowInsecure": true
+        }
+      },
+      "tag": "main"
+    },
+    {
+      "protocol": "vless",
+      "mux": {
+        "enabled": false
+      },
+      "sendThrough": "0.0.0.0",
+      "settings": {
+        "vnext": [
+          {
+            "address": "portal.example.com",
+            "port": 443,
+            "users": [
+              {
+                "alterId": 0,
+                "id": "a03875ea-c636-4c6c-6666-bad8ea39f666",
+                "level": 0,
+                "encryption": "none"
+              }
+            ]
+          }
+        ]
+      },
+      "streamSettings": {
+        "network": "ws",
+        "security": "tls",
+        "wsSettings": {
+          "allowInsecure": true,
+          "path": "/portal0"
+        }
+      },
+      "tag": "tunnel"
+    },
+    {
+      "protocol": "freedom",
+      "sendThrough": "0.0.0.0",
+      "settings": {
+        "domainStrategy": "AsIs",
+        "userLevel": 0
+      },
+      "streamSettings": {},
+      "tag": "direct"
+    }
+  ],
+  "policy": {
+    "levels": {
+      "0": {
+        "bufferSize": 32768,
+        "connIdle": 600,
+        "handshake": 30,
+        "statsUserDownlink": true,
+        "statsUserUplink": true,
+        "uplinkOnly": 5,
+        "downlinkOnly": 5
+      }
+    },
+    "system": {
+      "statsInboundDownlink": true,
+      "statsInboundUplink": true
+    }
+  },
+  "routing": {
+    "balancers": [],
+    "domainStrategy": "IPOnDemand",
+    "rules": [
+      {
+        "type": "field",
+        "inboundTag": ["bridge"],
+        "domain": ["full:portal0.localhost"],
+        "outboundTag": "tunnel"
+      },
+      {
+        "type": "field",
+        "inboundTag": ["bridge"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "domain": ["geosite:cn"],
+        "outboundTag": "direct"
+      },
+      {
+        "type": "field",
+        "ip": ["geoip:cn", "geoip:private"],
+        "outboundTag": "direct"
+      }
+    ]
+  },
+  "stats": {},
+  "transport": {}
+}
