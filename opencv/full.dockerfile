@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.2.2-cudnn8-devel-ubuntu20.04 as builder
+FROM nvidia/cuda:11.3.1-cudnn8-devel-ubuntu20.04 as builder
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
@@ -124,7 +124,7 @@ RUN \
 
 
 
-FROM nvidia/cuda:11.2.2-cudnn8-runtime-ubuntu20.04 as runtime
+FROM nvidia/cuda:11.3.1-cudnn8-runtime-ubuntu20.04 as runtime
 
 SHELL ["/bin/bash", "-xo", "pipefail", "-c"]
 
