@@ -1,6 +1,6 @@
 #!/bin/bash
 
-OPENCV_VERSION=4.5.1
+OPENCV_VERSION=4.5.2
 
 docker build \
     --network host \
