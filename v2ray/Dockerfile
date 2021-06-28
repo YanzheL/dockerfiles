@@ -10,9 +10,9 @@ ARG OS=linux
 ARG ARCH=64
 # Download and unpack latest release from official github release
 RUN V2RAY_FILE=v2ray-${OS}-${ARCH}.zip \
-    VERSION=$(curl -s https://github.com/v2fly/v2fly-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
+    VERSION=$(curl -s https://github.com/v2fly/v2ray-core/releases/latest |grep -oE '\d\.\d+\.\d+') \
     && echo "Got latest version = ${VERSION}, file = ${V2RAY_FILE}" \
-    && curl -Lo $V2RAY_FILE https://github.com/v2fly/v2fly-core/releases/download/v${VERSION}/$V2RAY_FILE \
+    && curl -Lo $V2RAY_FILE https://github.com/v2fly/v2ray-core/releases/download/v${VERSION}/$V2RAY_FILE \
     && unzip $V2RAY_FILE \
     && rm $V2RAY_FILE
 
