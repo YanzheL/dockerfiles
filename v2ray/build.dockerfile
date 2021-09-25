@@ -5,7 +5,7 @@ ENV DEBIAN_FRONTEND noninteractive
 RUN apt -y update && \
     apt -y install curl jq git file pkg-config zip g++ zlib1g-dev unzip python openssl
 
-ARG GOLANG_VERSION=1.15.8
+ARG GOLANG_VERSION=1.17.1
 
 RUN curl -L https://dl.google.com/go/go${GOLANG_VERSION}.linux-amd64.tar.gz | tar -xvz -C /usr/local
 
@@ -30,23 +30,23 @@ ARG OS=linux
 # Default architecture = 64
 ARG ARCH=amd64
 
-RUN mkdir -p ./src/v2ray.com && \
-    git clone https://github.com/v2fly/v2ray-core ./src/v2ray.com/core && \
-    go get -v -t -d ./src/v2ray.com/core/... && \
-    cd src/v2ray.com/core && \
-    VERSION=$(curl -s https://github.com/v2fly/v2ray-core/releases/latest |grep -oP '\d\.\d+\.\d+') && \
+RUN mkdir -p ./src/v2fly.com && \
+    git clone https://github.com/v2fly/v2fly-core ./src/v2fly.com/core && \
+    go get -v -t -d ./src/v2fly.com/core/... && \
+    cd src/v2fly.com/core && \
+    VERSION=$(curl -s https://github.com/v2fly/v2fly-core/releases/latest |grep -oP '\d\.\d+\.\d+') && \
     git checkout tags/v${VERSION} && \
-    bazel build --action_env=GOPATH=$GOPATH --action_env=PATH=$PATH --action_env=SPWD=$PWD --action_env=GOCACHE=$(go env GOCACHE) --spawn_strategy local //release:v2ray_${OS}_${ARCH}_package && \
-    mkdir /etc/v2ray && \
-    cd /etc/v2ray && \
-    unzip $GOPATH/src/v2ray.com/core/bazel-bin/release/*.zip
+    bazel build --action_env=GOPATH=$GOPATH --action_env=PATH=$PATH --action_env=SPWD=$PWD --action_env=GOCACHE=$(go env GOCACHE) --spawn_strategy local //release:v2fly_${OS}_${ARCH}_package && \
+    mkdir /etc/v2fly && \
+    cd /etc/v2fly && \
+    unzip $GOPATH/src/v2fly.com/core/bazel-bin/release/*.zip
 
 # Use distroless as minimal base image to package the executable binary
 # Refer to https://github.com/GoogleContainerTools/distroless for more details
 # Note: Use registry.aliyuncs.com as repo-mirror if gcr.io is blocked by China GFW.
 FROM gcr.io/distroless/base:latest
 LABEL maintainer "Yanzhe Lee <lee.yanzhe@yanzhe.org>"
-WORKDIR /etc/v2ray
-COPY --from=builder /etc/v2ray .
-ENV PATH /etc/v2ray:$PATH
-CMD ["v2ray", "-config=/etc/v2ray/config.json"]
+WORKDIR /etc/v2fly
+COPY --from=builder /etc/v2fly .
+ENV PATH /etc/v2fly:$PATH
+CMD ["v2fly", "-config=/etc/v2fly/config.json"]
