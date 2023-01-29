@@ -1,0 +1,11 @@
+version: "2"
+services:
+  ipes:
+    image: leeyanzhe/ipes:latest
+    # image: xuanyuanxxs/mht:new_v2
+    environment:
+      https_proxy: ''
+      http_proxy: ''
+    restart: always
+    volumes:
+      - ./custom.yml:/kuaicdn/app/ipes/var/db/ipes/happ-conf/custom.yml:ro
